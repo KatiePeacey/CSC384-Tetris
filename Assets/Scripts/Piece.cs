@@ -12,12 +12,42 @@ public class Piece : MonoBehaviour
         this.position = position;
         this.data = data;
 
-        if (this.cells == null){
+        if (this.cells == null) {
             this.cells = new Vector3Int[data.cells.Length];
         }
 
-        for (int i = 0; i < data.cells.Length; i++){
+        for (int i = 0; i < data.cells.Length; i++) {
             this.cells[i] = (Vector3Int)data.cells[i];
         }
     }
+
+    private void Update()
+    {
+        this.board.Clear(this);
+
+        if (Input.GetKeyDown(KeyCode.A) || Input.GetKeyUp(KeyCode.LeftArrow)) {
+            Move(Vector2Int.left);
+        } else if (Input.GetKeyDown(KeyCode.D)|| Input.GetKeyUp(KeyCode.RightArrow)) {
+            Move(Vector2Int.right);
+        }
+
+        this.board.Set(this);
+    }
+
+    private bool Move(Vector2Int translation)
+    {
+        Vector3Int newPosition = this.position;
+        newPosition.x += translation.x;
+        newPosition.y += translation.y;
+
+        bool valid = this.board.IsValidPosition(this, newPosition);
+
+        if(valid) {
+            this.position = newPosition;
+        }
+
+        return valid;
+    }
+
+
 }
