@@ -6,8 +6,9 @@ public class GameManagerBehaviour : MonoBehaviour
 {
     public int level = 1;
     public int score = 0;
-    public Text timerText;
     private float timer = 0f;
+    public Text timerText;
+    public Text scoreText;
     private bool isRunning = true;
     
     public Piece pieceManager;
@@ -68,6 +69,7 @@ public class GameManagerBehaviour : MonoBehaviour
     {
         level++;
         pieceManager.SetSpeed(GetSpeedForLevel());
+        SetScore(score + 10);
     }
 
     private float GetSpeedForLevel()
@@ -90,17 +92,9 @@ public class GameManagerBehaviour : MonoBehaviour
     {
         NewGame();
     }
-
-    public void AddScore(int linesCleared)
+    private void SetScore(int score)
     {
-        int points = linesCleared switch
-        {
-            1 => 100,
-            2 => 300,
-            3 => 500,
-            4 => 800,
-            _ => 0
-        };
-        score += points;
+        this.score = score;
+        scoreText.text = score.ToString();
     }
 }
