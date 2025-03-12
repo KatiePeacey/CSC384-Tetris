@@ -1,7 +1,4 @@
-using System;
-using System.Collections;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class GameManagerBehaviour : MonoBehaviour
@@ -25,9 +22,7 @@ public class GameManagerBehaviour : MonoBehaviour
         MainMenu.SetActive(true);
         gameOverMenu.SetActive(false);
         game.SetActive(false);
-        //NewGame();
     }
-
     void Update()
     {
         if (isRunning)
@@ -41,7 +36,6 @@ public class GameManagerBehaviour : MonoBehaviour
             IncreaseLevel();
         }
     }
-
     public void NewGame()
     {
         gameOverMenu.SetActive(false);
