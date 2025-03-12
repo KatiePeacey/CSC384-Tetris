@@ -8,6 +8,7 @@ public class GameManagerBehaviour : MonoBehaviour
 {
     public GameObject gameOverMenu;
     public GameObject game;
+    public GameObject MainMenu;
     public int level = 0;
     public int score = 0;
     private float timer = 0f;
@@ -15,13 +16,16 @@ public class GameManagerBehaviour : MonoBehaviour
     public Text scoreText;
     public Text levelText;
     private bool isRunning = true;
-    private bool isGameOver = false;
     public Piece pieceManager;
     public Board board;
 
-    void Start()
+    public void Start()
     {
-        NewGame();
+        board.tilemap.ClearAllTiles();
+        MainMenu.SetActive(true);
+        gameOverMenu.SetActive(false);
+        game.SetActive(false);
+        //NewGame();
     }
 
     void Update()
@@ -40,28 +44,19 @@ public class GameManagerBehaviour : MonoBehaviour
 
     public void NewGame()
     {
-        isGameOver = false;
         gameOverMenu.SetActive(false);
+        MainMenu.SetActive(false);
         game.SetActive(true);
-        score = 0;
-        level = 1;
-        timer = 0;
 
         pieceManager.SetSpeed(GetSpeedForLevel());
         board.SpawnPiece();
     }
     public void GameOver()
     {
-        isGameOver = true;
         board.tilemap.ClearAllTiles();
-        Time.timeScale = 0;
         gameOverMenu.SetActive(true);
         game.SetActive(false);
-    }
-    public void RestartGame()
-    {
-        Time.timeScale = 1; // Reset time scale
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex); // Reloads current scene
+        MainMenu.SetActive(false);
     }
 
     private bool ShouldIncreaseLevel()
