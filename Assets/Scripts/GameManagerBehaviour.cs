@@ -1,9 +1,13 @@
+using System;
 using System.Collections;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class GameManagerBehaviour : MonoBehaviour
 {
+    public GameObject gameOverMenu;
+    public GameObject game;
     public int level = 0;
     public int score = 0;
     private float timer = 0f;
@@ -11,12 +15,9 @@ public class GameManagerBehaviour : MonoBehaviour
     public Text scoreText;
     public Text levelText;
     private bool isRunning = true;
-    
+    private bool isGameOver = false;
     public Piece pieceManager;
     public Board board;
-
-    
-    private bool isGameOver = false;
 
     void Start()
     {
@@ -40,12 +41,27 @@ public class GameManagerBehaviour : MonoBehaviour
     public void NewGame()
     {
         isGameOver = false;
+        gameOverMenu.SetActive(false);
+        game.SetActive(true);
         score = 0;
         level = 1;
         timer = 0;
 
         pieceManager.SetSpeed(GetSpeedForLevel());
         board.SpawnPiece();
+    }
+    public void GameOver()
+    {
+        isGameOver = true;
+        board.tilemap.ClearAllTiles();
+        Time.timeScale = 0;
+        gameOverMenu.SetActive(true);
+        game.SetActive(false);
+    }
+    public void RestartGame()
+    {
+        Time.timeScale = 1; // Reset time scale
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex); // Reloads current scene
     }
 
     private bool ShouldIncreaseLevel()
@@ -63,17 +79,6 @@ public class GameManagerBehaviour : MonoBehaviour
     private float GetSpeedForLevel()
     {
         return Mathf.Max(0.1f, 1f - (level * 0.1f));
-    }
-
-    public void GameOver()
-    {
-        isGameOver = true;
-        Debug.Log("Game Over! Press R to Restart");
-    }
-
-    public void RestartGame()
-    {
-        NewGame();
     }
     public void SetScore(int score)
     {

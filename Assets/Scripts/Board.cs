@@ -3,12 +3,11 @@ using UnityEngine.Tilemaps;
 
 public class Board : MonoBehaviour
 {
-    public Tilemap tilemap { get; private set; }
+    public Tilemap tilemap;
     public Piece activePiece { get; private set; }
     public TetrominoData[] tetrominoes;
     public Vector3Int spawnPosition;
     public Vector2Int boardSize = new Vector2Int(10, 20);
-    
     public GameManagerBehaviour gameManager;
     public RectInt Bounds
     {
@@ -39,13 +38,8 @@ public class Board : MonoBehaviour
         if (IsValidPosition(this.activePiece, this.spawnPosition)) {
             Set(this.activePiece);
         } else {
-            GameOver();
+            gameManager.GameOver();
         }
-    }
-
-    private void GameOver()
-    {
-        this.tilemap.ClearAllTiles();
     }
 
     public void Set(Piece piece)
