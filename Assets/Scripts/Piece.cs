@@ -71,6 +71,10 @@ public class Piece : MonoBehaviour
             Lock();
         }
     }
+    public void SetSpeed(float newStepDelay)
+    {
+        this.stepDelay = newStepDelay;
+    }
     private void HardDrop()
     {
         while (Move(Vector2Int.down)) {
