@@ -1,10 +1,14 @@
+using System.Collections;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class GameManagerBehaviour : MonoBehaviour
 {
     public int level = 1;
     public int score = 0;
-    public float gameTime = 0f;
+    public Text timerText;
+    private float timer = 0f;
+    private bool isRunning = true;
     
     public Piece pieceManager;
     
@@ -17,14 +21,31 @@ public class GameManagerBehaviour : MonoBehaviour
 
     void Update()
     {
-        if (isGameOver) return;
+        if (isRunning)
+        {
+            timer += Time.deltaTime;
+            timerText.text = timer.ToString("F2");
+        }
 
-        gameTime += Time.deltaTime;
-        
         if (ShouldIncreaseLevel())
         {
             IncreaseLevel();
         }
+    }
+
+    public void StartTimer()
+    {
+        isRunning = true;
+    }
+
+    public void StopTimer()
+    {
+        isRunning = false;
+    }
+
+    public float GetTime()
+    {
+        return timer;
     }
 
     public void NewGame()
@@ -32,7 +53,7 @@ public class GameManagerBehaviour : MonoBehaviour
         isGameOver = false;
         score = 0;
         level = 1;
-        gameTime = 0f;
+        timer = 0;
 
         pieceManager.SetSpeed(GetSpeedForLevel());
         SpawnNewPiece();
@@ -40,7 +61,7 @@ public class GameManagerBehaviour : MonoBehaviour
 
     private bool ShouldIncreaseLevel()
     {
-        return (int)(gameTime / 30) >= level;
+        return (int)(timer / 30) >= level;
     }
 
     private void IncreaseLevel()
