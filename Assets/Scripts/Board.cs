@@ -8,7 +8,8 @@ public class Board : MonoBehaviour
     public TetrominoData[] tetrominoes;
     public Vector3Int spawnPosition;
     public Vector2Int boardSize = new Vector2Int(10, 20);
-
+    
+    public GameManagerBehaviour gameManager;
     public RectInt Bounds
     {
         get
@@ -27,10 +28,7 @@ public class Board : MonoBehaviour
             this.tetrominoes[i].Initialize();
         }
     }
-    private void Start()
-    {
-        SpawnPiece();
-    }
+
     public void SpawnPiece()
     {
         int random = Random.Range(0, this.tetrominoes.Length);
@@ -96,6 +94,7 @@ public class Board : MonoBehaviour
         {
             if (IsLineFull(row)) {
                 LineClear(row);
+                gameManager.SetScore(gameManager.score + 50);
              } else {
                 row++;
              }

@@ -13,6 +13,8 @@ public class GameManagerBehaviour : MonoBehaviour
     private bool isRunning = true;
     
     public Piece pieceManager;
+    public Board board;
+
     
     private bool isGameOver = false;
 
@@ -35,21 +37,6 @@ public class GameManagerBehaviour : MonoBehaviour
         }
     }
 
-    public void StartTimer()
-    {
-        isRunning = true;
-    }
-
-    public void StopTimer()
-    {
-        isRunning = false;
-    }
-
-    public float GetTime()
-    {
-        return timer;
-    }
-
     public void NewGame()
     {
         isGameOver = false;
@@ -58,7 +45,7 @@ public class GameManagerBehaviour : MonoBehaviour
         timer = 0;
 
         pieceManager.SetSpeed(GetSpeedForLevel());
-        SpawnNewPiece();
+        board.SpawnPiece();
     }
 
     private bool ShouldIncreaseLevel()
@@ -69,18 +56,13 @@ public class GameManagerBehaviour : MonoBehaviour
     private void IncreaseLevel()
     {
         pieceManager.SetSpeed(GetSpeedForLevel());
-        SetScore(score + 10);
+        SetScore(score + 100);
         SetLevel(level + 1);
     }
 
     private float GetSpeedForLevel()
     {
         return Mathf.Max(0.1f, 1f - (level * 0.1f));
-    }
-
-    private void SpawnNewPiece()
-    {
-        // Logic to spawn a new tetromino
     }
 
     public void GameOver()
@@ -93,7 +75,7 @@ public class GameManagerBehaviour : MonoBehaviour
     {
         NewGame();
     }
-    private void SetScore(int score)
+    public void SetScore(int score)
     {
         this.score = score;
         scoreText.text = "Score: " + score.ToString();
