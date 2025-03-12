@@ -4,11 +4,12 @@ using UnityEngine.UI;
 
 public class GameManagerBehaviour : MonoBehaviour
 {
-    public int level = 1;
+    public int level = 0;
     public int score = 0;
     private float timer = 0f;
     public Text timerText;
     public Text scoreText;
+    public Text levelText;
     private bool isRunning = true;
     
     public Piece pieceManager;
@@ -25,7 +26,7 @@ public class GameManagerBehaviour : MonoBehaviour
         if (isRunning)
         {
             timer += Time.deltaTime;
-            timerText.text = timer.ToString("F2");
+            timerText.text = "Time: " + timer.ToString("F2");
         }
 
         if (ShouldIncreaseLevel())
@@ -67,9 +68,9 @@ public class GameManagerBehaviour : MonoBehaviour
 
     private void IncreaseLevel()
     {
-        level++;
         pieceManager.SetSpeed(GetSpeedForLevel());
         SetScore(score + 10);
+        SetLevel(level + 1);
     }
 
     private float GetSpeedForLevel()
@@ -95,6 +96,11 @@ public class GameManagerBehaviour : MonoBehaviour
     private void SetScore(int score)
     {
         this.score = score;
-        scoreText.text = score.ToString();
+        scoreText.text = "Score: " + score.ToString();
+    }
+    private void SetLevel(int level)
+    {
+        this.level = level;
+        levelText.text = "Level: " + level.ToString();
     }
 }
