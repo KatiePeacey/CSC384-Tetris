@@ -6,6 +6,9 @@ public class GameManagerBehaviour : MonoBehaviour
     public GameObject gameOverMenu;
     public GameObject game;
     public GameObject MainMenu;
+    [SerializeField] private CanvasGroup leaderboard;
+    [SerializeField] private RectTransform scoreboardPanel;
+    [SerializeField] private GameObject scoreboardItemPrefab;
     public int level = 0;
     public int score = 0;
     private float timer = 0f;
@@ -22,6 +25,21 @@ public class GameManagerBehaviour : MonoBehaviour
         MainMenu.SetActive(true);
         gameOverMenu.SetActive(false);
         game.SetActive(false);
+        Leaderboard.SetActive(false);
+
+        // Load or add any new entries that may need to be added or modified
+        if (ScoreboardMangager.Exists)
+        {
+            if (MatchInfoSetup.Exists)
+            {
+                MatchInfo info = MatchInfoSetup.Instance.CurrentInfo;
+                if (info != null)
+                {
+                    ScoreboardMangager.Instance.AddNewEntry(info);
+                }
+            }
+        }
+        PopulateLeaderboardPanel();
     }
     void Update()
     {
@@ -78,5 +96,29 @@ public class GameManagerBehaviour : MonoBehaviour
     {
         this.level = level;
         levelText.text = "Level: " + level.ToString();
+    }
+
+    public void PopulateLeaderboardPanel()
+    {
+        if(scoreboardItemPefab == null)
+        {
+            return;
+        }
+
+        if (ScoreboardMangager.Exists)
+        {
+            int index = 0;
+            foreach (ScoreboardItem item in ScoreboardMangager.Instance.ScoreboardList)
+            {
+                GameObject go = Instantiate(scoreboardItemPrefab);
+                ScoreboardItemUI itemUI = go.GetComponent<ScoreboardItemUI>();
+                itemUI.SetData(index, item);
+                if (scoreboardPanel)
+                {
+                    go.transform.SetParent(scoreboardPanel);
+                }
+                index++;
+            }
+        }
     }
 }
