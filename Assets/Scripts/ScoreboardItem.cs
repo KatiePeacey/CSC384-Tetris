@@ -1,16 +1,17 @@
 using UnityEngine;
 
-public class ScoreboardItem : MonoBehaviour
-{
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-        
-    }
+[System.Serializable]
 
-    // Update is called once per frame
-    void Update()
+public class ScoreboardItem
+{
+    [SerializeField] public string playerName = string.Empty;
+    [SerializeField] public int score = 0;
+    [SerializeField] public int levelsCompleted = 0;
+
+    public void SetData(MatchInfo info)
     {
-        
+        playerName = info.playerName;
+        score = info.score;
+        levelsCompleted = info.levelsCompleted;
     }
 }
