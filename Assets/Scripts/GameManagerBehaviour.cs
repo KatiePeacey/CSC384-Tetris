@@ -108,13 +108,11 @@ public class GameManagerBehaviour : MonoBehaviour
         }
 
         List<ScoreboardItem> scores = ScoreboardManager.Instance.ScoreboardList;
-        Debug.Log("ScoreboardManager is available. Populating entries...");
         int index = 1;
 
         foreach (ScoreboardItem item in scores)
         {
             GameObject go = Instantiate(scoreboardItemPrefab, ScoreboardPanel);
-            Debug.Log($"Creating leaderboard item {index} for player: {item.playerName}, score: {item.score}, level: {item.levelCompleted}");
             ScoreboardItemUI itemUI = go.GetComponent<ScoreboardItemUI>();
 
 
@@ -125,7 +123,6 @@ public class GameManagerBehaviour : MonoBehaviour
             
             if (go == null)
             {
-                Debug.LogError("Failed to instantiate scoreboardItemPrefab.");
                 continue;
             }
 
