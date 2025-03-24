@@ -62,9 +62,6 @@ public class GameManagerBehaviour : MonoBehaviour
         MainMenu.SetActive(false);
         Leaderboard.SetActive(false);
 
-
-        ScoreboardManager.Instance.AddNewEntry("TestPlayer", score, level);
-        Debug.Log($"Added new score. Current leaderboard size: {ScoreboardManager.Instance.ScoreboardList.Count}");
         PopulateLeaderboardPanel();
     }
     public void ShowLeaderboard()
@@ -96,11 +93,13 @@ public class GameManagerBehaviour : MonoBehaviour
         this.score = score;
         scoreText.text = "Score: " + score.ToString();
     }
+    public int GetScore() => score;
     private void SetLevel(int level)
     {
         this.level = level;
         levelText.text = "Level: " + level.ToString();
     }
+    public int GetLevel() => level;
     public void PopulateLeaderboardPanel()
     {
         foreach (Transform child in ScoreboardPanel)
