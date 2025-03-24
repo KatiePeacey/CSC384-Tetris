@@ -1,105 +1,68 @@
+using UnityEngine;
 using System.Collections.Generic;
 using System.IO;
-using UnityEngine;
 
-public class ScoreboardMangager : MonoSingleton<ScoreboardMangager>
+public class ScoreboardManager : MonoBehaviour
 {
-    private List<ScoreboardItem> scoreboardList = new List<ScoreboardItem>();
-    public List<ScoreboardItem> ScoreboardList { get { return scoreboardList; } }
+    public static ScoreboardManager Instance { get; private set; }
 
-    protected override void Initialize()
+    private List<ScoreboardItem> scoreboardList = new List<ScoreboardItem>();
+    public List<ScoreboardItem> ScoreboardList => scoreboardList;
+
+    private string filename;
+
+    private void Awake()
     {
-        base.Initialize();
-        LoadScoreboardData();
+        if (Instance == null)
+        {
+            Instance = this;
+            DontDestroyOnLoad(gameObject);
+            filename = Path.Combine(Application.persistentDataPath, "scorelist.json");
+            LoadScoreboardData();
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
     }
 
-    public void AddNewEntry(MatchInfo info)
+    public void AddNewEntry(string playerName, int score, int levelCompleted)
     {
-        bool found = false;
-        for (int itemIndex = 0; itemIndex < scoreboardList.Count; itemIndex++)
+        ScoreboardItem existingItem = scoreboardList.Find(item => item.playerName == playerName);
+
+        if (existingItem == null)
         {
-            if (scoreboardList[itemIndex].playerName == info.PlayerName)
-            {
-                found = true;
-                break;
-            }
+            ScoreboardItem newItem = new ScoreboardItem(playerName, score, levelCompleted);
+            scoreboardList.Add(newItem);
+        }
+        else if (score > existingItem.score)
+        {
+            existingItem.score = score;
         }
 
-        if (found == false)
-        {
-            ScoreboardItem item = new ScoreboardItem();
-            item.SetData(info);
-            scoreboardList.Add(item);
-        }
-
-        scoreboardList.Sort((item1, item2)=>item1.score.CompareTo(item2.score));
-
+        scoreboardList.Sort((a, b) => b.score.CompareTo(a.score));
         SaveScoreboardData();
     }
 
-    public void RemoveEntryByPlayerName(string playerName)
+    private void SaveScoreboardData()
     {
-        int indexFound = -1;
-        for (int itemIndex = 0; itemIndex < scoreboardList.Count; ++itemIndex)
-        {
-            if (scoreboardList[itemIndex].playerName == playerName)
-            {
-                indexFound = itemIndex;
-                break;
-            }
-        }
-
-        if (indexFound != -1)
-        {
-            scoreboardList.RemoveAt(indexFound);
-        }
+        File.WriteAllText(filename, JsonUtility.ToJson(new ScoreboardWrapper(scoreboardList)));
     }
 
-    public ScoreboardItem GetScoreboardItemByName(string playerName)
+    private void LoadScoreboardData()
     {
-        ScoreboardItem item = null;
-        for (int itemIndex = 0; itemIndex < scoreboardList.Count; ++itemIndex)
-        {
-            if (scoreboardList[itemIndex].playerName == playerName)
-            {
-                item = scoreboardList[itemIndex];
-                break;
-            }
-        }
-        return item;
-    }
-
-    public void SaveScoreboardData()
-    {
-        string filename = string.Format("{0}/{1}", Application.persistentDataPath, "scorelist.json");
-        StreamWriter streamWriter = new StreamWriter(filename);
-        Debug.LogError("SAVING DATA...");
-        foreach (ScoreboardItem item in scoreboardList)
-        {
-            string jsonData = JsonUtility.ToJson(item);
-            Debug.LogError(jsonData);
-            streamWriter.WriteLine(jsonData);
-        }
-        streamWriter.Close();
-        Debug.LogError("...END");
-    }
-
-        public void LoadScoreboardData()
-    {
-        string filename = string.Format("{0}/{1}", Application.persistentDataPath, "scorelist.json");
         if (File.Exists(filename))
         {
-            StreamReader streamReader = new StreamReader(filename);
-            Debug.LogError("LOADING DATA...");
-            while (!streamReader.EndOfStream)
-            {
-                string jsonData = streamReader.ReadLine();
-                Debug.LogError(jsonData);
-                ScoreboardItem item = JsonUtility.FromJson<ScoreboardItem>(jsonData);
-                scoreboardList.Add(item);
-            }
-        streamReader.Close();
-        Debug.LogError("...END");
+            string jsonData = File.ReadAllText(filename);
+            scoreboardList = JsonUtility.FromJson<ScoreboardWrapper>(jsonData)?.scoreboardList ?? new List<ScoreboardItem>();
         }
     }
+
+    [System.Serializable]
+    private class ScoreboardWrapper
+    {
+        public List<ScoreboardItem> scoreboardList;
+        public ScoreboardWrapper(List<ScoreboardItem> list) => scoreboardList = list;
+    }
 }
+

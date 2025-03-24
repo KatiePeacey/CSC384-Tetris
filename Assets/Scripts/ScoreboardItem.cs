@@ -1,17 +1,16 @@
-using UnityEngine;
+using System;
 
-[System.Serializable]
-
+[Serializable]
 public class ScoreboardItem
 {
-    [SerializeField] public string playerName = string.Empty;
-    [SerializeField] public int score = 0;
-    [SerializeField] public int levelsCompleted = 0;
+    public string playerName;
+    public int score;
+    public int levelCompleted;
 
-    public void SetData(MatchInfo info)
+    public ScoreboardItem(string playerName, int score, int levelCompleted)
     {
-        playerName = info.playerName;
-        score = info.score;
-        levelsCompleted = info.levelsCompleted;
+        this.playerName = playerName;
+        this.score = score;
+        this.levelCompleted = levelCompleted;
     }
 }

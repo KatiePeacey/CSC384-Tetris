@@ -1,19 +1,18 @@
-using TMPro;
 using UnityEngine;
-using TMPro;
+using UnityEngine.UI;
 
 public class ScoreboardItemUI : MonoBehaviour
 {
-    [SerializeField] private TextMeshProUGUI indexLabel;
-    [SerializeField] private TextMeshProUGUI playerNameLabel;
-    [SerializeField] private TextMeshProUGUI scoreLabel;
-    [SerializeField] private TextMeshProUGUI levelsCompletedLabel;
+    public Text Index;
+    public Text PlayerName;
+    public Text Score;
+    public Text LevelCompleted;
 
-    public void SetData(int index, ScoreboardItem scoreItem)
+    public void SetData(int rank, ScoreboardItem item)
     {
-        indexLabel.text = string.Format("{0}", index);
-        playerNameLabel.text = string.Format("{0}", scoreItem.playerName);
-        scoreLabel.text = string.Format("{0}", scoreItem.score);
-        levelsCompletedLabel.text = string.Format("{0}", scoreItem.levelsCompleted);
+        Index.text = rank.ToString();
+        PlayerName.text = item.playerName;
+        Score.text = item.score.ToString();
+        LevelCompleted.text = item.levelCompleted.ToString();
     }
 }

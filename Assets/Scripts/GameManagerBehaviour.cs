@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -6,9 +7,9 @@ public class GameManagerBehaviour : MonoBehaviour
     public GameObject gameOverMenu;
     public GameObject game;
     public GameObject MainMenu;
-    [SerializeField] private CanvasGroup leaderboard;
-    [SerializeField] private RectTransform scoreboardPanel;
-    [SerializeField] private GameObject scoreboardItemPrefab;
+    public GameObject Leaderboard;
+    public Transform ScoreboardPanel;
+    public GameObject scoreboardItemPrefab;
     public int level = 0;
     public int score = 0;
     private float timer = 0f;
@@ -27,18 +28,7 @@ public class GameManagerBehaviour : MonoBehaviour
         game.SetActive(false);
         Leaderboard.SetActive(false);
 
-        // Load or add any new entries that may need to be added or modified
-        if (ScoreboardMangager.Exists)
-        {
-            if (MatchInfoSetup.Exists)
-            {
-                MatchInfo info = MatchInfoSetup.Instance.CurrentInfo;
-                if (info != null)
-                {
-                    ScoreboardMangager.Instance.AddNewEntry(info);
-                }
-            }
-        }
+        Debug.Log("Before calling PopulateLeaderboardPanel");
         PopulateLeaderboardPanel();
     }
     void Update()
@@ -59,6 +49,7 @@ public class GameManagerBehaviour : MonoBehaviour
         gameOverMenu.SetActive(false);
         MainMenu.SetActive(false);
         game.SetActive(true);
+        Leaderboard.SetActive(false);
 
         pieceManager.SetSpeed(GetSpeedForLevel());
         board.SpawnPiece();
@@ -67,6 +58,19 @@ public class GameManagerBehaviour : MonoBehaviour
     {
         board.tilemap.ClearAllTiles();
         gameOverMenu.SetActive(true);
+        game.SetActive(false);
+        MainMenu.SetActive(false);
+        Leaderboard.SetActive(false);
+
+
+        ScoreboardManager.Instance.AddNewEntry("TestPlayer", score, level);
+        Debug.Log($"Added new score. Current leaderboard size: {ScoreboardManager.Instance.ScoreboardList.Count}");
+        PopulateLeaderboardPanel();
+    }
+    public void ShowLeaderboard()
+    {
+        Leaderboard.SetActive(true);
+        gameOverMenu.SetActive(false);
         game.SetActive(false);
         MainMenu.SetActive(false);
     }
@@ -97,28 +101,36 @@ public class GameManagerBehaviour : MonoBehaviour
         this.level = level;
         levelText.text = "Level: " + level.ToString();
     }
-
     public void PopulateLeaderboardPanel()
     {
-        if(scoreboardItemPefab == null)
+        foreach (Transform child in ScoreboardPanel)
         {
-            return;
+            Destroy(child.gameObject);
         }
 
-        if (ScoreboardMangager.Exists)
+        List<ScoreboardItem> scores = ScoreboardManager.Instance.ScoreboardList;
+        Debug.Log("ScoreboardManager is available. Populating entries...");
+        int index = 1;
+
+        foreach (ScoreboardItem item in scores)
         {
-            int index = 0;
-            foreach (ScoreboardItem item in ScoreboardMangager.Instance.ScoreboardList)
+            GameObject go = Instantiate(scoreboardItemPrefab, ScoreboardPanel);
+            Debug.Log($"Creating leaderboard item {index} for player: {item.playerName}, score: {item.score}, level: {item.levelCompleted}");
+            ScoreboardItemUI itemUI = go.GetComponent<ScoreboardItemUI>();
+
+
+            if (itemUI != null)
             {
-                GameObject go = Instantiate(scoreboardItemPrefab);
-                ScoreboardItemUI itemUI = go.GetComponent<ScoreboardItemUI>();
                 itemUI.SetData(index, item);
-                if (scoreboardPanel)
-                {
-                    go.transform.SetParent(scoreboardPanel);
-                }
-                index++;
             }
+            
+            if (go == null)
+            {
+                Debug.LogError("Failed to instantiate scoreboardItemPrefab.");
+                continue;
+            }
+
+            index++;
         }
     }
 }
