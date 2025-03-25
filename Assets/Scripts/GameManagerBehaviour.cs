@@ -16,9 +16,13 @@ public class GameManagerBehaviour : MonoBehaviour
     public Text timerText;
     public Text scoreText;
     public Text levelText;
+    public InputField PlayerName;  // Assign this in the inspector to the InputField in your Main Menu
+
+    private string playerName;
     private bool isRunning = true;
     public Piece pieceManager;
     public Board board;
+
 
     public void Start()
     {
@@ -28,7 +32,6 @@ public class GameManagerBehaviour : MonoBehaviour
         game.SetActive(false);
         Leaderboard.SetActive(false);
 
-        Debug.Log("Before calling PopulateLeaderboardPanel");
         PopulateLeaderboardPanel();
     }
     void Update()
@@ -46,6 +49,8 @@ public class GameManagerBehaviour : MonoBehaviour
     }
     public void NewGame()
     {
+        playerName = PlayerName.text;
+
         gameOverMenu.SetActive(false);
         MainMenu.SetActive(false);
         game.SetActive(true);
@@ -56,13 +61,15 @@ public class GameManagerBehaviour : MonoBehaviour
     }
     public void GameOver()
     {
+        PopulateLeaderboardPanel();
+
         board.tilemap.ClearAllTiles();
         gameOverMenu.SetActive(true);
         game.SetActive(false);
         MainMenu.SetActive(false);
         Leaderboard.SetActive(false);
 
-        PopulateLeaderboardPanel();
+        ScoreboardManager.Instance.AddNewEntry(playerName, score, level);
     }
     public void ShowLeaderboard()
     {
@@ -90,16 +97,15 @@ public class GameManagerBehaviour : MonoBehaviour
     }
     public void SetScore(int score)
     {
+        Debug.Log($"Updating score: Old: {this.score}, New: {score}");
         this.score = score;
         scoreText.text = "Score: " + score.ToString();
     }
-    public int GetScore() => score;
     private void SetLevel(int level)
     {
         this.level = level;
         levelText.text = "Level: " + level.ToString();
     }
-    public int GetLevel() => level;
     public void PopulateLeaderboardPanel()
     {
         foreach (Transform child in ScoreboardPanel)
@@ -108,11 +114,13 @@ public class GameManagerBehaviour : MonoBehaviour
         }
 
         List<ScoreboardItem> scores = ScoreboardManager.Instance.ScoreboardList;
+        Debug.Log("ScoreboardManager is available. Populating entries...");
         int index = 1;
 
         foreach (ScoreboardItem item in scores)
         {
             GameObject go = Instantiate(scoreboardItemPrefab, ScoreboardPanel);
+            Debug.Log($"Creating leaderboard item {index} for player: {item.playerName}, score: {item.score}, level: {item.levelCompleted}");
             ScoreboardItemUI itemUI = go.GetComponent<ScoreboardItemUI>();
 
 
@@ -123,6 +131,7 @@ public class GameManagerBehaviour : MonoBehaviour
             
             if (go == null)
             {
+                Debug.LogError("Failed to instantiate scoreboardItemPrefab.");
                 continue;
             }
 
