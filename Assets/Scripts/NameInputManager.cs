@@ -21,6 +21,7 @@ public class NameInputManager : MonoBehaviour
         {
             Debug.Log("Player name submitted: " + playerName);
             gameManager.SetPlayerName(playerName);
+            gameManager.NewGame();
         }
         else
         {
