@@ -131,7 +131,6 @@ GameObject:
   - component: {fileID: 14066445}
   - component: {fileID: 14066444}
   - component: {fileID: 14066446}
-  - component: {fileID: 14066447}
   m_Layer: 5
   m_Name: ScoreboardPanel
   m_TagString: Untagged
@@ -153,10 +152,10 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 593038604}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 1.5939941, y: -246.22711}
-  m_SizeDelta: {x: -372.0761, y: 492.4552}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0.0020141602, y: 492.4552}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &14066444
 MonoBehaviour:
@@ -211,10 +210,10 @@ MonoBehaviour:
   m_Padding:
     m_Left: 0
     m_Right: 0
-    m_Top: 10
+    m_Top: 50
     m_Bottom: 0
-  m_ChildAlignment: 4
-  m_Spacing: 1
+  m_ChildAlignment: 1
+  m_Spacing: 100
   m_ChildForceExpandWidth: 1
   m_ChildForceExpandHeight: 1
   m_ChildControlWidth: 0
@@ -222,20 +221,6 @@ MonoBehaviour:
   m_ChildScaleWidth: 0
   m_ChildScaleHeight: 0
   m_ReverseArrangement: 0
---- !u!114 &14066447
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 14066442}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3245ec927659c4140ac4f8d17403cc18, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_HorizontalFit: 0
-  m_VerticalFit: 0
 --- !u!1 &46936747
 GameObject:
   m_ObjectHideFlags: 0
@@ -1965,7 +1950,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Button
+  m_Text: Submit
 --- !u!222 &543760690
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -1983,6 +1968,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 593038604}
+  - component: {fileID: 593038606}
+  - component: {fileID: 593038605}
   m_Layer: 5
   m_Name: Content
   m_TagString: Untagged
@@ -2007,9 +1994,49 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -188.0486, y: -0.000022209739}
-  m_SizeDelta: {x: 390.6558, y: 234.4864}
+  m_AnchoredPosition: {x: 0.000015259, y: -0.000022209739}
+  m_SizeDelta: {x: 14.0233, y: 0}
   m_Pivot: {x: 0, y: 1}
+--- !u!114 &593038605
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 593038603}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3245ec927659c4140ac4f8d17403cc18, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_HorizontalFit: 0
+  m_VerticalFit: 2
+--- !u!114 &593038606
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 593038603}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 59f8146938fff824cb5fd77236b75775, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Padding:
+    m_Left: 0
+    m_Right: 0
+    m_Top: 200
+    m_Bottom: 0
+  m_ChildAlignment: 1
+  m_Spacing: 100
+  m_ChildForceExpandWidth: 1
+  m_ChildForceExpandHeight: 1
+  m_ChildControlWidth: 0
+  m_ChildControlHeight: 0
+  m_ChildScaleWidth: 0
+  m_ChildScaleHeight: 0
+  m_ReverseArrangement: 0
 --- !u!1 &619394800
 GameObject:
   m_ObjectHideFlags: 0
@@ -4001,8 +4028,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 187.07, y: -103}
-  m_SizeDelta: {x: 160, y: 30}
+  m_AnchoredPosition: {x: 75, y: -133}
+  m_SizeDelta: {x: 107.1602, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &1131140909
 GameObject:
@@ -4183,7 +4210,6 @@ GameObject:
   - component: {fileID: 1176761067}
   - component: {fileID: 1176761066}
   - component: {fileID: 1176761064}
-  - component: {fileID: 1176761068}
   m_Layer: 5
   m_Name: PlayerNameInput
   m_TagString: Untagged
@@ -4277,8 +4303,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 13, y: -143}
-  m_SizeDelta: {x: 160, y: 30}
+  m_AnchoredPosition: {x: -80, y: -133}
+  m_SizeDelta: {x: 125.7255, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1176761066
 MonoBehaviour:
@@ -4318,21 +4344,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1176761063}
   m_CullTransparentMesh: 1
---- !u!114 &1176761068
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1176761063}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f1b8b73006b424c38a90051971e19870, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  PlayerNameInput: {fileID: 0}
-  submitButton: {fileID: 0}
-  gameManager: {fileID: 0}
 --- !u!1 &1202770465
 GameObject:
   m_ObjectHideFlags: 0
@@ -4592,7 +4603,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Enter text...
+  m_Text: Enter Name...
 --- !u!222 &1316609981
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -4733,7 +4744,6 @@ MonoBehaviour:
   scoreboardItemPrefab: {fileID: 1376686810123697315}
   level: 1
   score: 0
-  playerName: 
   timerText: {fileID: 763535405}
   scoreText: {fileID: 328950076}
   levelText: {fileID: 302421969}
@@ -5698,7 +5708,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 1335685240}
   m_Direction: 2
   m_Value: 1
-  m_Size: 1
+  m_Size: 0.35625234
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
