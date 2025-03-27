@@ -6,7 +6,7 @@ using System.IO;
  {
      public static ScoreboardManager Instance { get; private set; }
  
-     private List<ScoreboardItem> scoreboardList = new List<ScoreboardItem>();
+     public List<ScoreboardItem> scoreboardList = new List<ScoreboardItem>();
      public List<ScoreboardItem> ScoreboardList => scoreboardList;
      private string filename;
      private void Awake()
@@ -35,6 +35,7 @@ using System.IO;
          else if (score > existingItem.score)
          {
              existingItem.score = score;
+             existingItem.levelCompleted = levelCompleted;
          }
          SaveScoreboardData();
      }

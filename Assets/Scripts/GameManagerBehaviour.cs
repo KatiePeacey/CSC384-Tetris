@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
  using UnityEngine;
  using UnityEngine.UI;
@@ -17,21 +18,35 @@ using System.Collections.Generic;
      public Text timerText;
      public Text scoreText;
      public Text levelText;
+    public Text scorePBText;
+    public Text levelPBText;
      private bool isRunning = true;
      public Piece pieceManager;
      public Board board;
+     private ScoreboardManager scoreboardManager;
      public void SetPlayerName(string name)
     {
         playerName = name;
     }
+    public void ResetGameStats()
+    {
+        score = 0;
+        level = 1;
+        timer = 0f;
+        timerText.text = "Time: " + timer.ToString("F2");
+        scoreText.text = "Score: " + score;
+        levelText.text = "Level: " + level;
+        Debug.Log("Game stats reset.");
+    }
      public void Start()
      {
+        scoreboardManager = ScoreboardManager.Instance;
          board.tilemap.ClearAllTiles();
          MainMenu.SetActive(true);
          gameOverMenu.SetActive(false);
          game.SetActive(false);
          Leaderboard.SetActive(false);
- 
+
          PopulateLeaderboardPanel();
      }
      void Update()
@@ -53,9 +68,11 @@ using System.Collections.Generic;
          MainMenu.SetActive(false);
          game.SetActive(true);
          Leaderboard.SetActive(false);
- 
+         
+         ResetGameStats();
          pieceManager.SetSpeed(GetSpeedForLevel());
          board.SpawnPiece();
+         ShowPB(score, level);
      }
      public void GameOver()
      {
@@ -86,6 +103,7 @@ using System.Collections.Generic;
          pieceManager.SetSpeed(GetSpeedForLevel());
          SetScore(score + 100);
          SetLevel(level + 1);
+         ShowPB(score, level);
      }
  
      private float GetSpeedForLevel()
@@ -96,13 +114,49 @@ using System.Collections.Generic;
      {
          this.score = score;
          scoreText.text = "Score: " + score.ToString();
+         ShowPB(score, level);
+
      }
-     private void SetLevel(int level)
+     public void SetLevel(int level)
      {
          this.level = level;
          levelText.text = "Level: " + level.ToString();
+         ShowPB(score, level);
      }
-     public void PopulateLeaderboardPanel()
+
+     public void ShowPB(int score, int level)
+    {  
+        // Find the existing player by name in the scoreboard
+        ScoreboardItem existingItem = scoreboardManager.ScoreboardList.Find(item => item.playerName == playerName);
+
+        if (existingItem == null)
+        {
+            // No previous entry for the player, so show as a new PB
+            scorePBText.text = "New PB Score: " + score.ToString();
+            scorePBText.color = Color.yellow;
+            levelPBText.text = "New PB Level: " + level.ToString();
+            levelPBText.color = Color.yellow;
+        }
+        else if (score > existingItem.score)
+        {
+            // If the new score is higher than the existing one, update to new PB
+            scorePBText.text = "New PB Score: " + score.ToString();
+            scorePBText.color = Color.yellow;
+            levelPBText.text = "New PB Level: " + level.ToString();
+            levelPBText.color = Color.yellow;
+        }
+        else
+        {
+            // If the new score is not higher, show the current PB
+            scorePBText.text = "PB Score: " + existingItem.score.ToString();
+            scorePBText.color = Color.white;
+            levelPBText.text = "PB Level: " + existingItem.levelCompleted.ToString();
+            levelPBText.color = Color.white;
+        }
+    }
+
+
+    public void PopulateLeaderboardPanel()
      {
          foreach (Transform child in ScoreboardPanel)
          {
