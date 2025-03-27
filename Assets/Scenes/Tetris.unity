@@ -4620,6 +4620,7 @@ MonoBehaviour:
   levelPBText: {fileID: 1841471882}
   pieceManager: {fileID: 1148283360}
   board: {fileID: 1148283361}
+  gameOver: 0
 --- !u!4 &1354974646
 Transform:
   m_ObjectHideFlags: 0
@@ -5853,6 +5854,7 @@ GameObject:
   - component: {fileID: 2099842482}
   - component: {fileID: 2099842481}
   - component: {fileID: 2099842480}
+  - component: {fileID: 2099842483}
   m_Layer: 5
   m_Name: Back Button
   m_TagString: Untagged
@@ -5974,6 +5976,24 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2099842478}
   m_CullTransparentMesh: 1
+--- !u!114 &2099842483
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2099842478}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c7b67be7bd2c44e10b7187b985f1f3bd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  BackButton: {fileID: 2099842480}
+  gameManager: {fileID: 1354974645}
+  Leaderboard: {fileID: 658387957}
+  gameOverMenu: {fileID: 1540142128}
+  game: {fileID: 371883240}
+  MainMenu: {fileID: 720206119}
 --- !u!1001 &1376686810123697313
 PrefabInstance:
   m_ObjectHideFlags: 0

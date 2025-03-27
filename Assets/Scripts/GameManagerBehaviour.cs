@@ -23,6 +23,9 @@ using System.Collections.Generic;
      private bool isRunning = true;
      public Piece pieceManager;
      public Board board;
+
+     public bool gameOver;
+     public bool mainMenu;
      private ScoreboardManager scoreboardManager;
      public void SetPlayerName(string name)
     {
@@ -46,6 +49,7 @@ using System.Collections.Generic;
          gameOverMenu.SetActive(false);
          game.SetActive(false);
          Leaderboard.SetActive(false);
+         mainMenu = true;
 
          PopulateLeaderboardPanel();
      }
@@ -73,6 +77,8 @@ using System.Collections.Generic;
          pieceManager.SetSpeed(GetSpeedForLevel());
          board.SpawnPiece();
          ShowPB(score, level);
+         gameOver = false;
+         mainMenu = true;
      }
      public void GameOver()
      {
@@ -82,6 +88,8 @@ using System.Collections.Generic;
          MainMenu.SetActive(false);
          Leaderboard.SetActive(false);
          
+         gameOver = true;
+         mainMenu = false;
          ScoreboardManager.Instance.AddNewEntry(playerName, score, level);
          PopulateLeaderboardPanel();
      }
