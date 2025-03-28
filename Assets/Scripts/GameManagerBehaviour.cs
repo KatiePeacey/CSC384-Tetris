@@ -20,6 +20,8 @@ public class GameManagerBehaviour : MonoBehaviour
     public Text levelText;
     public Text scorePBText;
     public Text levelPBText;
+    public Text abovePlayerText;
+    public Text currentRank;
     private bool isRunning = true;
     public Piece pieceManager;
     public Board board;
@@ -43,7 +45,7 @@ public class GameManagerBehaviour : MonoBehaviour
     }
     public void Start()
     {
-    scoreboardManager = ScoreboardManager.Instance;
+        scoreboardManager = ScoreboardManager.Instance;
         board.tilemap.ClearAllTiles();
         MainMenu.SetActive(true);
         gameOverMenu.SetActive(false);
@@ -65,6 +67,8 @@ public class GameManagerBehaviour : MonoBehaviour
         {
             IncreaseLevel();
         }
+        ShowPB(score, level);
+        ShowRank(score, level);
     }
     public void NewGame()
     {
@@ -76,7 +80,9 @@ public class GameManagerBehaviour : MonoBehaviour
         ResetGameStats();
         pieceManager.SetSpeed(GetSpeedForLevel());
         board.SpawnPiece();
+        PopulateLeaderboardPanel();
         ShowPB(score, level);
+        ShowRank(score, level);
         gameOver = false;
         mainMenu = true;
     }
@@ -112,6 +118,7 @@ public class GameManagerBehaviour : MonoBehaviour
         SetScore(score + 100);
         SetLevel(level + 1);
         ShowPB(score, level);
+        ShowRank(score, level);
     }
 
     private float GetSpeedForLevel()
@@ -123,41 +130,82 @@ public class GameManagerBehaviour : MonoBehaviour
         this.score = score;
         scoreText.text = "Score: " + score.ToString();
         ShowPB(score, level);
-
+        ShowRank(score, level);
     }
     public void SetLevel(int level)
     {
         this.level = level;
         levelText.text = "Level: " + level.ToString();
         ShowPB(score, level);
+        ShowRank(score, level);
     }
-
     public void ShowPB(int score, int level)
-{  
-    ScoreboardItem existingItem = scoreboardManager.ScoreboardList.Find(item => item.playerName == playerName);
+    {  
+        ScoreboardItem existingItem = scoreboardManager.ScoreboardList.Find(item => item.playerName == playerName);
 
-    if (existingItem == null)
-    {
-        scorePBText.text = "New PB Score: " + score.ToString();
-        scorePBText.color = Color.yellow;
-        levelPBText.text = "New PB Level: " + level.ToString();
-        levelPBText.color = Color.yellow;
+        if (existingItem == null)
+        {
+            scorePBText.text = "New PB Score: " + score.ToString();
+            scorePBText.color = Color.yellow;
+            levelPBText.text = "New PB Level: " + level.ToString();
+            levelPBText.color = Color.yellow;
+        }
+        else if (score > existingItem.score)
+        {
+            scorePBText.text = "New PB Score: " + score.ToString();
+            scorePBText.color = Color.yellow;
+            levelPBText.text = "New PB Level: " + level.ToString();
+            levelPBText.color = Color.yellow;
+        }
+        else
+        {
+            scorePBText.text = "PB Score: " + existingItem.score.ToString();
+            scorePBText.color = Color.white;
+            levelPBText.text = "PB Level: " + existingItem.levelCompleted.ToString();
+            levelPBText.color = Color.white;
+        }
     }
-    else if (score > existingItem.score)
+
+    private void ShowRank(int score, int level)
     {
-        scorePBText.text = "New PB Score: " + score.ToString();
-        scorePBText.color = Color.yellow;
-        levelPBText.text = "New PB Level: " + level.ToString();
-        levelPBText.color = Color.yellow;
+        List<ScoreboardItem> sortedList = new List<ScoreboardItem>(scoreboardManager.ScoreboardList);
+        sortedList.Sort((a, b) => b.score.CompareTo(a.score));
+
+        int playerRank = sortedList.FindIndex(item => item.playerName == playerName);
+
+        if (playerRank == -1)
+        {
+            return;
+        }
+
+        ScoreboardItem currentPlayer = sortedList[playerRank];
+
+        currentRank.text = $"Your Rank: {playerRank + 1}";
+
+        if (playerRank > 0)
+        {
+            ScoreboardItem abovePlayer = sortedList[playerRank - 1];
+            abovePlayerText.text = $"Above You: {abovePlayer.playerName} | Score: {abovePlayer.score}";
+        }
+        else
+        {
+            abovePlayerText.text = "You are the top player!";
+        }
+
+        if (playerRank == 0)
+        {
+            currentRank.color = Color.green;
+        }
+        else if (playerRank <= 3)
+        {
+            currentRank.color = Color.blue;
+        }
+        else
+        {
+            currentRank.color = Color.white;
+        }
     }
-    else
-    {
-        scorePBText.text = "PB Score: " + existingItem.score.ToString();
-        scorePBText.color = Color.white;
-        levelPBText.text = "PB Level: " + existingItem.levelCompleted.ToString();
-        levelPBText.color = Color.white;
-    }
-}
+
 
 
 public void PopulateLeaderboardPanel()
