@@ -68,7 +68,7 @@ public class GameManagerBehaviour : MonoBehaviour
             IncreaseLevel();
         }
         ShowPB(score, level);
-        ShowRank(score, level);
+        ShowRank();
     }
     public void NewGame()
     {
@@ -82,7 +82,7 @@ public class GameManagerBehaviour : MonoBehaviour
         board.SpawnPiece();
         PopulateLeaderboardPanel();
         ShowPB(score, level);
-        ShowRank(score, level);
+        ShowRank();
         gameOver = false;
         mainMenu = true;
     }
@@ -97,6 +97,7 @@ public class GameManagerBehaviour : MonoBehaviour
         gameOver = true;
         mainMenu = false;
         ScoreboardManager.Instance.AddNewEntry(playerName, score, level);
+        ShowRank();
         PopulateLeaderboardPanel();
     }
     public void ShowLeaderboard()
@@ -118,7 +119,7 @@ public class GameManagerBehaviour : MonoBehaviour
         SetScore(score + 100);
         SetLevel(level + 1);
         ShowPB(score, level);
-        ShowRank(score, level);
+        ShowRank();
     }
 
     private float GetSpeedForLevel()
@@ -130,14 +131,14 @@ public class GameManagerBehaviour : MonoBehaviour
         this.score = score;
         scoreText.text = "Score: " + score.ToString();
         ShowPB(score, level);
-        ShowRank(score, level);
+        ShowRank();
     }
     public void SetLevel(int level)
     {
         this.level = level;
         levelText.text = "Level: " + level.ToString();
         ShowPB(score, level);
-        ShowRank(score, level);
+        ShowRank();
     }
     public void ShowPB(int score, int level)
     {  
@@ -166,46 +167,51 @@ public class GameManagerBehaviour : MonoBehaviour
         }
     }
 
-    private void ShowRank(int score, int level)
+   private void ShowRank()
     {
+        // Sort the leaderboard based on score in descending order
         List<ScoreboardItem> sortedList = new List<ScoreboardItem>(scoreboardManager.ScoreboardList);
         sortedList.Sort((a, b) => b.score.CompareTo(a.score));
 
+        // Find the current player's rank in the sorted leaderboard
         int playerRank = sortedList.FindIndex(item => item.playerName == playerName);
 
+        // If the player is not found, return early
         if (playerRank == -1)
         {
             return;
         }
 
-        ScoreboardItem currentPlayer = sortedList[playerRank];
+        // Display the current player's rank (1-based index)
+        currentRank.text = $"You're Rank: {playerRank + 1}";
 
-        currentRank.text = $"Your Rank: {playerRank + 1}";
-
+        // Check if there is a player above the current player
         if (playerRank > 0)
         {
+            // Get the player who is currently above the current player
             ScoreboardItem abovePlayer = sortedList[playerRank - 1];
             abovePlayerText.text = $"Above You: {abovePlayer.playerName} | Score: {abovePlayer.score}";
         }
         else
         {
+            // If the current player is at the top, display a different message
             abovePlayerText.text = "You are the top player!";
         }
 
+        // Change the color based on the player's rank
         if (playerRank == 0)
         {
-            currentRank.color = Color.green;
+            currentRank.color = Color.green;  // Top player
         }
         else if (playerRank <= 3)
         {
-            currentRank.color = Color.blue;
+            currentRank.color = Color.blue;  // Top 3 players
         }
         else
         {
-            currentRank.color = Color.white;
+            currentRank.color = Color.white;  // Lower ranks
         }
     }
-
 
 
 public void PopulateLeaderboardPanel()
