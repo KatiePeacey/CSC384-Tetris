@@ -37,12 +37,17 @@ public class ScoreboardManager : MonoBehaviour
             existingItem.score = score;
             existingItem.levelCompleted = levelCompleted;
         }
+        SortLeaderboard();
         SaveScoreboardData();
     }
 
     private void SaveScoreboardData()
     {
-    File.WriteAllText(filename, JsonUtility.ToJson(new ScoreboardWrapper(scoreboardList)));
+        File.WriteAllText(filename, JsonUtility.ToJson(new ScoreboardWrapper(scoreboardList)));
+    }
+    private void SortLeaderboard()
+    {
+        scoreboardList.Sort((a, b) => b.score.CompareTo(a.score));
     }
     private void LoadScoreboardData()
     {

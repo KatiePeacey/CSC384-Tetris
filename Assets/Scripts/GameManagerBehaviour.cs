@@ -29,10 +29,12 @@ public class GameManagerBehaviour : MonoBehaviour
     public bool gameOver;
     public bool mainMenu;
     private ScoreboardManager scoreboardManager;
+
     public void SetPlayerName(string name)
     {
         playerName = name;
     }
+
     public void ResetGameStats()
     {
         score = 0;
@@ -43,6 +45,7 @@ public class GameManagerBehaviour : MonoBehaviour
         levelText.text = "Level: " + level;
         Debug.Log("Game stats reset.");
     }
+
     public void Start()
     {
         scoreboardManager = ScoreboardManager.Instance;
@@ -55,6 +58,7 @@ public class GameManagerBehaviour : MonoBehaviour
 
         PopulateLeaderboardPanel();
     }
+
     void Update()
     {
         if (isRunning)
@@ -67,25 +71,29 @@ public class GameManagerBehaviour : MonoBehaviour
         {
             IncreaseLevel();
         }
+
+        UpdateLeaderboardDuringGameplay();
         ShowPB(score, level);
-        ShowRank();
+        ShowRank(score);
     }
+
     public void NewGame()
     {
         gameOverMenu.SetActive(false);
         MainMenu.SetActive(false);
         game.SetActive(true);
         Leaderboard.SetActive(false);
-        
+
         ResetGameStats();
         pieceManager.SetSpeed(GetSpeedForLevel());
         board.SpawnPiece();
         PopulateLeaderboardPanel();
         ShowPB(score, level);
-        ShowRank();
+        ShowRank(score);
         gameOver = false;
         mainMenu = true;
     }
+
     public void GameOver()
     {
         board.tilemap.ClearAllTiles();
@@ -93,13 +101,14 @@ public class GameManagerBehaviour : MonoBehaviour
         game.SetActive(false);
         MainMenu.SetActive(false);
         Leaderboard.SetActive(false);
-        
+
         gameOver = true;
         mainMenu = false;
         ScoreboardManager.Instance.AddNewEntry(playerName, score, level);
-        ShowRank();
+        ShowRank(score);
         PopulateLeaderboardPanel();
     }
+
     public void ShowLeaderboard()
     {
         Leaderboard.SetActive(true);
@@ -118,28 +127,34 @@ public class GameManagerBehaviour : MonoBehaviour
         pieceManager.SetSpeed(GetSpeedForLevel());
         SetScore(score + 100);
         SetLevel(level + 1);
+        UpdateLeaderboardDuringGameplay();
         ShowPB(score, level);
-        ShowRank();
+        ShowRank(score);
     }
 
     private float GetSpeedForLevel()
     {
         return Mathf.Max(0.1f, 1f - (level * 0.1f));
     }
+
     public void SetScore(int score)
     {
         this.score = score;
         scoreText.text = "Score: " + score.ToString();
+        UpdateLeaderboardDuringGameplay();
         ShowPB(score, level);
-        ShowRank();
+        ShowRank(score);
     }
+
     public void SetLevel(int level)
     {
         this.level = level;
         levelText.text = "Level: " + level.ToString();
+        UpdateLeaderboardDuringGameplay();
         ShowPB(score, level);
-        ShowRank();
+        ShowRank(score);
     }
+
     public void ShowPB(int score, int level)
     {  
         ScoreboardItem existingItem = scoreboardManager.ScoreboardList.Find(item => item.playerName == playerName);
@@ -167,54 +182,37 @@ public class GameManagerBehaviour : MonoBehaviour
         }
     }
 
-   private void ShowRank()
+    private void ShowRank(int score)
     {
-        // Sort the leaderboard based on score in descending order
         List<ScoreboardItem> sortedList = new List<ScoreboardItem>(scoreboardManager.ScoreboardList);
         sortedList.Sort((a, b) => b.score.CompareTo(a.score));
 
-        // Find the current player's rank in the sorted leaderboard
         int playerRank = sortedList.FindIndex(item => item.playerName == playerName);
 
-        // If the player is not found, return early
         if (playerRank == -1)
         {
             return;
         }
 
-        // Display the current player's rank (1-based index)
-        currentRank.text = $"You're Rank: {playerRank + 1}";
+        currentRank.text = $"{playerRank + 1}";
 
-        // Check if there is a player above the current player
         if (playerRank > 0)
         {
-            // Get the player who is currently above the current player
             ScoreboardItem abovePlayer = sortedList[playerRank - 1];
             abovePlayerText.text = $"Above You: {abovePlayer.playerName} | Score: {abovePlayer.score}";
         }
         else
         {
-            // If the current player is at the top, display a different message
             abovePlayerText.text = "You are the top player!";
         }
 
-        // Change the color based on the player's rank
         if (playerRank == 0)
         {
-            currentRank.color = Color.green;  // Top player
-        }
-        else if (playerRank <= 3)
-        {
-            currentRank.color = Color.blue;  // Top 3 players
-        }
-        else
-        {
-            currentRank.color = Color.white;  // Lower ranks
+            currentRank.color = Color.green;
         }
     }
 
-
-public void PopulateLeaderboardPanel()
+    public void PopulateLeaderboardPanel()
     {
         foreach (Transform child in ScoreboardPanel)
         {
@@ -230,7 +228,6 @@ public void PopulateLeaderboardPanel()
             Debug.Log($"Creating leaderboard item {index} for player: {item.playerName}, score: {item.score}, level: {item.levelCompleted}");
             ScoreboardItemUI itemUI = go.GetComponent<ScoreboardItemUI>();
 
-
             if (itemUI != null)
             {
                 itemUI.SetData(index, item);
@@ -243,5 +240,10 @@ public void PopulateLeaderboardPanel()
 
             index++;
         }
+    }
+    public void UpdateLeaderboardDuringGameplay()
+    {
+        ScoreboardManager.Instance.AddNewEntry(playerName, score, level);
+        PopulateLeaderboardPanel();
     }
 }
