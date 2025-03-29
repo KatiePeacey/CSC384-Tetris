@@ -6,6 +6,7 @@ public class NameInputManager : MonoBehaviour
     public InputField PlayerNameInput;
     public Button submitButton;
     public GameManagerBehaviour gameManager;
+    public Text errorMessage;
 
     private string playerName;
 
@@ -25,7 +26,8 @@ public class NameInputManager : MonoBehaviour
         }
         else
         {
-            Debug.Log("Please enter a valid name.");
+            errorMessage.text = "Please enter a name!";
+            errorMessage.color = Color.red;
         }
     }
 }

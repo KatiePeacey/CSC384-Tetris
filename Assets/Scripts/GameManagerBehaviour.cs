@@ -64,7 +64,11 @@ public class GameManagerBehaviour : MonoBehaviour
         if (isRunning)
         {
             timer += Time.deltaTime;
-            timerText.text = "Time: " + timer.ToString("F2");
+            
+            int minutes = Mathf.FloorToInt(timer / 60);
+            int seconds = Mathf.FloorToInt(timer % 60);
+
+            timerText.text = $"Time: {minutes:00}:{seconds:00}";
         }
 
         if (ShouldIncreaseLevel())
