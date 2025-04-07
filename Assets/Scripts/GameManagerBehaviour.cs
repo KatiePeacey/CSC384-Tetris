@@ -29,6 +29,7 @@ public class GameManagerBehaviour : MonoBehaviour
     public bool gameOver;
     public bool mainMenu;
     private ScoreboardManager scoreboardManager;
+    public PowerupManager powerupManager;
 
     public void SetPlayerName(string name)
     {

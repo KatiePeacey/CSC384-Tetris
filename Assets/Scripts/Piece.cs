@@ -12,6 +12,9 @@ public class Piece : MonoBehaviour
     public float lockDelay = 0.5f;
     private float stepTime;
     private float lockTime;
+    public PowerupManager powerupManager;
+    private bool isGhostPowerupActive = false;
+    private Vector3Int currentTilePosition;
     public void Initialize(Board board, Vector3Int position, TetrominoData data)
     {
         this.board = board;
@@ -29,11 +32,16 @@ public class Piece : MonoBehaviour
             this.cells[i] = (Vector3Int)data.cells[i];
         }
     }
+    public void Start()
+    {
+        powerupManager = FindFirstObjectByType<PowerupManager>();
+    }
 
     private void Update()
     {
         this.board.Clear(this);
         this.lockTime += Time.deltaTime;
+        currentTilePosition = GetTilePositionUnderPiece();
 
         if (Input.GetKeyDown(KeyCode.Q)) {
             Rotate(-1);
@@ -58,9 +66,21 @@ public class Piece : MonoBehaviour
         if (Time.time >= this.stepTime) {
             Step();
         }
-
         this.board.Set(this);
     }
+    private Vector3Int GetTilePositionUnderPiece()
+    {
+        // Assuming the piece is centered around its position
+        Vector3 worldPosition = transform.position;
+        return powerupManager.powerupTilemap.WorldToCell(worldPosition);
+    }
+
+    // Check if the piece is on a Ghost Powerup tile
+    private bool IsOnGhostPowerup()
+    {
+        return powerupManager.powerupTilemap.GetTile(currentTilePosition) == powerupManager.ghostPowerupTile;
+    }
+
     private void Step()
     {
         this.stepTime = Time.time + this.stepDelay;
@@ -100,6 +120,7 @@ public class Piece : MonoBehaviour
             this.position = newPosition;
             this.lockTime = 0f;
         }
+
         return valid;
     }
 
