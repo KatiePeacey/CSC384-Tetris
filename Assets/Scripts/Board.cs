@@ -9,6 +9,8 @@ public class Board : MonoBehaviour
     public Vector3Int spawnPosition;
     public Vector2Int boardSize = new Vector2Int(10, 20);
     public GameManagerBehaviour gameManager;
+    public GameObject ghostPowerupPrefab;
+    public float powerupSpawnChance = 0.1f; // 10%
     public RectInt Bounds
     {
         get
@@ -37,6 +39,7 @@ public class Board : MonoBehaviour
 
         if (IsValidPosition(this.activePiece, this.spawnPosition)) {
             Set(this.activePiece);
+            TrySpawnPowerup();
         } else {
             gameManager.GameOver();
         }
@@ -131,6 +134,16 @@ public class Board : MonoBehaviour
                 this.tilemap.SetTile(position, above);
             }
             row++;
+        }
+    }
+    public void TrySpawnPowerup()
+    {
+        if (Random.value <= powerupSpawnChance)
+        {
+            Vector3Int spawnPos = new Vector3Int(Random.Range(Bounds.xMin, Bounds.xMax), Bounds.yMax - 1, 0);
+            Vector3 worldPos = tilemap.CellToWorld(spawnPos) + new Vector3(0.5f, 0.5f, 0); // Centered
+
+            Instantiate(ghostPowerupPrefab, worldPos, Quaternion.identity);
         }
     }
 }

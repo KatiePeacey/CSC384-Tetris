@@ -10,17 +10,31 @@ public class Ghost : MonoBehaviour
     public Vector3Int[] cells { get; private set; }
     public Vector3Int position { get; private set; }
 
+    private bool isActive = false;
+    private float activeTimer = 0f;
+    private float duration = 10f;
+
     private void Awake()
     {
         this.tilemap = GetComponentInChildren<Tilemap>();
         this.cells = new Vector3Int[4];
+        Clear(); // Ensure it's invisible at start
     }
+
     private void LateUpdate()
     {
+        if (!isActive) return;
+
         Clear();
         Copy();
         Drop();
         Set();
+
+        activeTimer -= Time.deltaTime;
+        if (activeTimer <= 0f)
+        {
+            Deactivate();
+        }
     }
 
     private void Clear()
@@ -43,22 +57,24 @@ public class Ghost : MonoBehaviour
     private void Drop()
     {
         Vector3Int position = this.trackingPiece.position;
-
         int current = position.y;
         int bottom = -this.board.boardSize.y / 2 - 1;
-    
+
         this.board.Clear(this.trackingPiece);
 
         for (int row = current; row >= bottom; row--)
         {
             position.y = row;
-
-            if (this.board.IsValidPosition(this.trackingPiece, position)) {
+            if (this.board.IsValidPosition(this.trackingPiece, position))
+            {
                 this.position = position;
-            } else {
+            }
+            else
+            {
                 break;
             }
         }
+
         this.board.Set(this.trackingPiece);
     }
 
@@ -71,4 +87,15 @@ public class Ghost : MonoBehaviour
         }
     }
 
+    public void Activate(float customDuration = 10f)
+    {
+        isActive = true;
+        activeTimer = customDuration;
+    }
+
+    public void Deactivate()
+    {
+        isActive = false;
+        Clear();
+    }
 }

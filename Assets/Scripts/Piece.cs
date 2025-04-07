@@ -61,7 +61,6 @@ public class Piece : MonoBehaviour
 
         this.board.Set(this);
     }
-
     private void Step()
     {
         this.stepTime = Time.time + this.stepDelay;
@@ -101,7 +100,6 @@ public class Piece : MonoBehaviour
             this.position = newPosition;
             this.lockTime = 0f;
         }
-
         return valid;
     }
 
