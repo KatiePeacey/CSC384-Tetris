@@ -10,6 +10,9 @@ public class Board : MonoBehaviour
     public Vector2Int boardSize = new Vector2Int(10, 20);
     public GameManagerBehaviour gameManager;
     public GameObject LineBlastEffect;
+    public AudioSource sfxSource;
+    public AudioClip lineBlastSFX;
+
 
     public RectInt Bounds
     {
@@ -155,6 +158,11 @@ public class Board : MonoBehaviour
 
         GameObject effect = Instantiate(LineBlastEffect, effectPosition, Quaternion.identity);
         Destroy(effect, 2f); 
+        if (sfxSource && lineBlastSFX)
+        {
+            sfxSource.PlayOneShot(lineBlastSFX);
+        }
+
 
         for (int col = bounds.xMin; col < bounds.xMax; col++)
         {
