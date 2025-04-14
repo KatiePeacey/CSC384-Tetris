@@ -3990,6 +3990,9 @@ MonoBehaviour:
   tile: {fileID: 11400000, guid: 143030b520bba4610a3be849329f0cef, type: 2}
   board: {fileID: 1148283361}
   trackingPiece: {fileID: 1148283360}
+  <tilemap>k__BackingField: {fileID: 0}
+  <cells>k__BackingField: []
+  <position>k__BackingField: {x: 0, y: 0, z: 0}
 --- !u!156049354 &1044397314
 Grid:
   m_ObjectHideFlags: 0
@@ -4589,8 +4592,8 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: 02d0a7cc4eaa74922bcf7b867fd742d4, type: 3}
-  m_Resource: {fileID: 8300000, guid: 02d0a7cc4eaa74922bcf7b867fd742d4, type: 3}
+  m_audioClip: {fileID: 8300000, guid: 870f437cc9d814f65a37d85bf38ab350, type: 3}
+  m_Resource: {fileID: 8300000, guid: 870f437cc9d814f65a37d85bf38ab350, type: 3}
   m_PlayOnAwake: 1
   m_Volume: 1
   m_Pitch: 1
@@ -4970,11 +4973,9 @@ MonoBehaviour:
   abovePlayerText: {fileID: 1138153749}
   currentRank: {fileID: 843833619}
   pieceManager: {fileID: 1148283360}
-  coinManager: {fileID: 1359891368}
   board: {fileID: 1148283361}
   gameOver: 0
   mainMenu: 0
-  powerupManager: {fileID: 0}
 --- !u!4 &1354974646
 Transform:
   m_ObjectHideFlags: 0
@@ -5006,55 +5007,6 @@ MonoBehaviour:
   submitButton: {fileID: 1100603240}
   gameManager: {fileID: 1354974645}
   errorMessage: {fileID: 819452302}
---- !u!1 &1359891367
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1359891369}
-  - component: {fileID: 1359891368}
-  m_Layer: 0
-  m_Name: CoinManager
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &1359891368
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1359891367}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fa5e4ae6449e74a1d9c2b8a3c445418c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  totalCoins: 0
-  coinPrefab: {fileID: 1421080148}
-  boardSize: {x: 10, y: 20}
-  spawnInterval: 10
-  board: {fileID: 0}
---- !u!4 &1359891369
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1359891367}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 8.043708, y: 0.23313007, z: -0.07633728}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1368732086
 GameObject:
   m_ObjectHideFlags: 0
@@ -5209,71 +5161,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1371526866}
   m_CullTransparentMesh: 1
---- !u!1 &1417569529
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1417569531}
-  - component: {fileID: 1417569530}
-  m_Layer: 0
-  m_Name: CoinSpawner
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &1417569530
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1417569529}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 38722b874edc343efa3952e6759f2733, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  coinPrefab: {fileID: 2165019790568691953, guid: 2afa1bbab7fac470fb77c64f0719d00c, type: 3}
-  gridSize: {x: 10, y: 20}
-  spawnInterval: 10
---- !u!4 &1417569531
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1417569529}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 9.0939665, y: 0.570076, z: -0.083425745}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &1421080148 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 2165019790568691953, guid: 2afa1bbab7fac470fb77c64f0719d00c, type: 3}
-  m_PrefabInstance: {fileID: 3732941175580766824}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &1421080151
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1421080148}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d4f2acebf07d049e7a678872c277298a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  tilePosition: {x: 0, y: 0, z: 0}
 --- !u!1 &1456883652
 GameObject:
   m_ObjectHideFlags: 0
@@ -6668,66 +6555,6 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 6020928001653473229, guid: fae9268cb132d4856ac76cfb5296c562, type: 3}
   m_PrefabInstance: {fileID: 1376686810123697313}
   m_PrefabAsset: {fileID: 0}
---- !u!1001 &3732941175580766824
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    serializedVersion: 3
-    m_TransformParent: {fileID: 0}
-    m_Modifications:
-    - target: {fileID: 2165019790568691953, guid: 2afa1bbab7fac470fb77c64f0719d00c, type: 3}
-      propertyPath: m_Name
-      value: CoinPowerup
-      objectReference: {fileID: 0}
-    - target: {fileID: 2275758768569554914, guid: 2afa1bbab7fac470fb77c64f0719d00c, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 7.51
-      objectReference: {fileID: 0}
-    - target: {fileID: 2275758768569554914, guid: 2afa1bbab7fac470fb77c64f0719d00c, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 4.72
-      objectReference: {fileID: 0}
-    - target: {fileID: 2275758768569554914, guid: 2afa1bbab7fac470fb77c64f0719d00c, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: -0.059687857
-      objectReference: {fileID: 0}
-    - target: {fileID: 2275758768569554914, guid: 2afa1bbab7fac470fb77c64f0719d00c, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2275758768569554914, guid: 2afa1bbab7fac470fb77c64f0719d00c, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2275758768569554914, guid: 2afa1bbab7fac470fb77c64f0719d00c, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2275758768569554914, guid: 2afa1bbab7fac470fb77c64f0719d00c, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2275758768569554914, guid: 2afa1bbab7fac470fb77c64f0719d00c, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2275758768569554914, guid: 2afa1bbab7fac470fb77c64f0719d00c, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2275758768569554914, guid: 2afa1bbab7fac470fb77c64f0719d00c, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-    m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 2165019790568691953, guid: 2afa1bbab7fac470fb77c64f0719d00c, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1421080151}
-  m_SourcePrefab: {fileID: 100100000, guid: 2afa1bbab7fac470fb77c64f0719d00c, type: 3}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
@@ -6741,6 +6568,3 @@ SceneRoots:
   - {fileID: 658387961}
   - {fileID: 1735490117}
   - {fileID: 1820795053}
-  - {fileID: 3732941175580766824}
-  - {fileID: 1359891369}
-  - {fileID: 1417569531}
