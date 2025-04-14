@@ -133,4 +133,9 @@ public class Board : MonoBehaviour
             row++;
         }
     }
+    public bool IsTileOccupied(Vector3Int position)
+    {
+        return tilemap.HasTile(position);
+    }
+
 }

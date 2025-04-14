@@ -24,6 +24,7 @@ public class GameManagerBehaviour : MonoBehaviour
     public Text currentRank;
     private bool isRunning = true;
     public Piece pieceManager;
+    public CoinManager coinManager;
     public Board board;
 
     public bool gameOver;
@@ -56,6 +57,11 @@ public class GameManagerBehaviour : MonoBehaviour
         game.SetActive(false);
         Leaderboard.SetActive(false);
         mainMenu = true;
+
+        if (coinManager != null && board != null)
+        {
+            coinManager.board = board;
+        }
 
         PopulateLeaderboardPanel();
     }
