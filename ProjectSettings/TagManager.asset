@@ -13,7 +13,7 @@ TagManager:
   - Water
   - UI
   - Ghost
-  - 
+  - Powerup
   - 
   - 
   - 
@@ -53,6 +53,9 @@ TagManager:
     locked: 0
   - name: 3_Boarder top
     uniqueID: 943722001
+    locked: 0
+  - name: powerup
+    uniqueID: 812328671
     locked: 0
   m_RenderingLayers:
   - Default

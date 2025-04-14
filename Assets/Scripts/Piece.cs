@@ -55,6 +55,11 @@ public class Piece : MonoBehaviour
             HardDrop();
         }
         
+        if (Input.GetKeyDown(KeyCode.L)) {
+        UseLineBlaster();
+        }
+
+        
         if (Time.time >= this.stepTime) {
             Step();
         }
@@ -179,6 +184,16 @@ public class Piece : MonoBehaviour
             return min + (input - min) % (max - min);
         }
     }
+
+    private void UseLineBlaster()
+    {
+        int y = this.position.y; // Get current Y row of the piece
+
+        if (board.IsRowWithinBounds(y)) {
+            board.ClearSingleLine(y);
+        }
+    }
+
 
 
 }

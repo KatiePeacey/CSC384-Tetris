@@ -9,6 +9,8 @@ public class Board : MonoBehaviour
     public Vector3Int spawnPosition;
     public Vector2Int boardSize = new Vector2Int(10, 20);
     public GameManagerBehaviour gameManager;
+    public GameObject LineBlastEffect;
+
     public RectInt Bounds
     {
         get
@@ -137,5 +139,50 @@ public class Board : MonoBehaviour
     {
         return tilemap.HasTile(position);
     }
+
+    public bool IsRowWithinBounds(int y)
+    {
+        return y >= Bounds.yMin && y < Bounds.yMax;
+    }
+
+    public void ClearSingleLine(int row)
+    {
+        RectInt bounds = this.Bounds;
+
+        Vector3 effectPosition = new Vector3(bounds.xMin + (boardSize.x / 2), row, 0);
+
+        effectPosition.y += 0.5f;
+
+        GameObject effect = Instantiate(LineBlastEffect, effectPosition, Quaternion.identity);
+        Destroy(effect, 2f); 
+
+        for (int col = bounds.xMin; col < bounds.xMax; col++)
+        {
+            Vector3Int position = new Vector3Int(col, row, 0);
+            tilemap.SetTile(position, null);
+        }
+
+        for (int y = row + 1; y < bounds.yMax; y++)
+        {
+            for (int col = bounds.xMin; col < bounds.xMax; col++)
+            {
+                Vector3Int upper = new Vector3Int(col, y, 0);
+                TileBase aboveTile = tilemap.GetTile(upper);
+
+                Vector3Int lower = new Vector3Int(col, y - 1, 0);
+                tilemap.SetTile(lower, aboveTile);
+            }
+        }
+
+        for (int col = bounds.xMin; col < bounds.xMax; col++)
+        {
+            Vector3Int top = new Vector3Int(col, bounds.yMax - 1, 0);
+            tilemap.SetTile(top, null);
+        }
+
+        gameManager.SetScore(gameManager.score + 100);
+    }
+
+
 
 }
