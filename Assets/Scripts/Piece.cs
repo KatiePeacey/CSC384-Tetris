@@ -12,8 +12,6 @@ public class Piece : MonoBehaviour
     public float lockDelay = 0.5f;
     private float stepTime;
     private float lockTime;
-    private bool isGhostPowerupActive = false;
-    private Vector3Int currentTilePosition;
     public void Initialize(Board board, Vector3Int position, TetrominoData data)
     {
         this.board = board;
@@ -31,37 +29,38 @@ public class Piece : MonoBehaviour
             this.cells[i] = (Vector3Int)data.cells[i];
         }
     }
+
     private void Update()
     {
         this.board.Clear(this);
         this.lockTime += Time.deltaTime;
 
-        // Movement input...
-        if (Input.GetKeyDown(KeyCode.Q)) Rotate(-1);
-        else if (Input.GetKeyDown(KeyCode.E)) Rotate(1);
+        if (Input.GetKeyDown(KeyCode.Q)) {
+            Rotate(-1);
+        } else if (Input.GetKeyDown(KeyCode.E)) {
+            Rotate(1);
+        }
 
-        if (Input.GetKeyDown(KeyCode.A)) Move(Vector2Int.left);
-        else if (Input.GetKeyDown(KeyCode.D)) Move(Vector2Int.right);
-        if (Input.GetKeyDown(KeyCode.S)) Move(Vector2Int.down);
+        if (Input.GetKeyDown(KeyCode.A) || Input.GetKeyUp(KeyCode.LeftArrow)) {
+            Move(Vector2Int.left);
+        } else if (Input.GetKeyDown(KeyCode.D)|| Input.GetKeyUp(KeyCode.RightArrow)) {
+            Move(Vector2Int.right);
+        }
 
-        if (Input.GetKeyDown(KeyCode.Space)) HardDrop();
+        if (Input.GetKeyDown(KeyCode.S) || Input.GetKeyUp(KeyCode.DownArrow)) {
+            Move(Vector2Int.down);
+        }
 
-        if (Time.time >= this.stepTime) Step();
+        if (Input.GetKeyDown(KeyCode.Space)) {
+            HardDrop();
+        }
+        
+        if (Time.time >= this.stepTime) {
+            Step();
+        }
 
         this.board.Set(this);
-
-        // Check for coin collection
-        if (CoinManager.Instance != null)
-        {
-            Vector3Int[] pieceTiles = new Vector3Int[cells.Length];
-            for (int i = 0; i < cells.Length; i++)
-            {
-                pieceTiles[i] = position + cells[i];
-            }
-            CoinManager.Instance.CheckCoinCollection(pieceTiles);
-        }
     }
-
 
     private void Step()
     {
