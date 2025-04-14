@@ -12,6 +12,13 @@ public class Piece : MonoBehaviour
     public float lockDelay = 0.5f;
     private float stepTime;
     private float lockTime;
+    private bool isSlowTimeActive = false;
+    private float slowTimeEnd = 0f;
+    private float originalStepDelay;
+    public GameObject FreezeEffect;
+    private GameObject activeSlowEffect;
+
+
     public void Initialize(Board board, Vector3Int position, TetrominoData data)
     {
         this.board = board;
@@ -56,15 +63,38 @@ public class Piece : MonoBehaviour
         }
         
         if (Input.GetKeyDown(KeyCode.L)) {
-        UseLineBlaster();
+            UseLineBlaster();
+        }
+        if (Input.GetKeyDown(KeyCode.Z))
+        {
+            ActivateSlowTime(7f, 2f);
         }
 
-        
+        if (isSlowTimeActive && Time.time >= slowTimeEnd)
+        {
+            ResetSlowTime();
+            if (activeSlowEffect != null)
+            {
+                Destroy(activeSlowEffect);
+            }
+        }
+
+ 
         if (Time.time >= this.stepTime) {
             Step();
         }
 
+
         this.board.Set(this);
+    }
+    private void ResetSlowTime()
+    {
+        // Reset the game speed after slow time ends
+        this.stepDelay = originalStepDelay;
+        isSlowTimeActive = false;
+
+        // Reset the music pitch
+        AudioManager.Instance?.ResetMusicPitch();
     }
 
     private void Step()
@@ -192,6 +222,28 @@ public class Piece : MonoBehaviour
         if (board.IsRowWithinBounds(y)) {
             board.ClearSingleLine(y);
         }
+    }
+    public void ActivateSlowTime(float duration, float slowSpeed)
+    {
+        if (FreezeEffect != null)
+        {
+            activeSlowEffect = Instantiate(FreezeEffect, transform);
+            activeSlowEffect.transform.localPosition = Vector3.zero;
+
+        }
+
+        // Slow down the music pitch
+        AudioManager.Instance?.SetMusicPitch(0.5f);  // Adjust music pitch for effect
+
+        // Adjust game speed
+        if (!isSlowTimeActive)
+        {
+            originalStepDelay = this.stepDelay;  // Save original speed before slow time
+        }
+
+        this.stepDelay = slowSpeed;  // Adjust step delay to slow down the game
+        slowTimeEnd = Time.time + duration;  // Calculate when slow time should end
+        isSlowTimeActive = true;
     }
 
 
