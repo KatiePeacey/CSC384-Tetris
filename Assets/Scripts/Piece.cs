@@ -83,6 +83,16 @@ public class Piece : MonoBehaviour
         if (Time.time >= this.stepTime) {
             Step();
         }
+        if (isSlowTimeActive && activeSlowEffect != null)
+        {
+            // Convert piece's tile position to world space
+            Vector3 worldPos = board.tilemap.CellToWorld(this.position);
+            
+            // Offset if needed (to center)
+            worldPos += new Vector3(0.5f, 0.5f, 0f);
+
+            activeSlowEffect.transform.position = worldPos;
+        }
 
 
         this.board.Set(this);
