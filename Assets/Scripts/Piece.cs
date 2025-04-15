@@ -247,7 +247,7 @@ public class Piece : MonoBehaviour
         }
     }
 
-    private void UseLineBlaster()
+    public void UseLineBlaster()
     {
         int y = this.position.y;
 
@@ -271,7 +271,7 @@ public class Piece : MonoBehaviour
         isSlowTimeActive = true;
     }
 
-    private void UseBombPowerUp()
+    public void UseBombPowerUp()
     {
         Vector3Int center = this.position;
 

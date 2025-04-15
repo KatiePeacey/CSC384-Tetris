@@ -11,7 +11,9 @@ public class PowerupInventory
     // Declare the counts for the various powerups
     public int explosionCount = 0;
     public int freezeCount = 0;
-    public int laserCount = 0; // This is likely missing in your class
+    public int laserCount = 0;
+    private const int MAX_POWERUP_COUNT = 10;
+
 
     // Method to add a powerup (example)
     public void AddPowerup(PowerupType type)
@@ -19,18 +21,20 @@ public class PowerupInventory
         switch (type)
         {
             case PowerupType.Explosion:
-                explosionCount++;
+                if (explosionCount < MAX_POWERUP_COUNT)
+                    explosionCount++;
                 break;
             case PowerupType.Freeze:
-                freezeCount++;
+                if (freezeCount < MAX_POWERUP_COUNT)
+                    freezeCount++;
                 break;
             case PowerupType.Laser:
-                laserCount++; // Increment the laser count when the laser powerup is added
-                break;
-            default:
+                if (laserCount < MAX_POWERUP_COUNT)
+                    laserCount++;
                 break;
         }
     }
+
 
     // Method to use a powerup (example)
     public bool UsePowerup(PowerupType type)

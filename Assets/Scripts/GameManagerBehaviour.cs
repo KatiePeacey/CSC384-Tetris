@@ -45,6 +45,10 @@ public class GameManagerBehaviour : MonoBehaviour
     private int explosionMilestone = 0;
     private int freezeMilestone = 0;
     private int laserMilestone = 0;
+    public Button explosionButton;
+    public Button freezeButton;
+    public Button laserButton;
+
 
 
 
@@ -105,6 +109,7 @@ public class GameManagerBehaviour : MonoBehaviour
         }
 
         CheckPowerupConditions();
+        UpdatePowerupButtons();
         UpdatePowerupUI();
         UpdateLeaderboardDuringGameplay();
         ShowPB(score, level);
@@ -405,9 +410,51 @@ public class GameManagerBehaviour : MonoBehaviour
     }
     void UpdatePowerupUI()
     {
-        explosionCountText.text = "Explosion: " + powerupInventory.explosionCount;
-        freezeCountText.text = "Freeze: " + powerupInventory.freezeCount;
-        laserCountText.text = "Laser: " + powerupInventory.laserCount;
+        explosionCountText.text = "" + powerupInventory.explosionCount;
+        freezeCountText.text = "" + powerupInventory.freezeCount;
+        laserCountText.text = "" + powerupInventory.laserCount;
     }
+
+    public void UseExplosionPowerup()
+    {
+        if (powerupInventory.explosionCount > 0)
+        {
+            powerupInventory.UsePowerup(PowerupType.Explosion);
+            pieceManager.UseBombPowerUp();
+        
+            UpdatePowerupUI();
+            UpdatePowerupButtons();
+        }
+    }
+
+    public void UseFreezePowerup()
+    {
+        if (powerupInventory.freezeCount > 0)
+        {
+            powerupInventory.UsePowerup(PowerupType.Freeze);
+            pieceManager.ActivateSlowTime(7f, 2f); 
+            UpdatePowerupUI();
+            UpdatePowerupButtons();
+        }
+    }
+
+    public void UseLaserPowerup()
+    {
+        if (powerupInventory.laserCount > 0)
+        {
+            powerupInventory.UsePowerup(PowerupType.Laser);
+            pieceManager.UseLineBlaster();
+            UpdatePowerupUI();
+            UpdatePowerupButtons();
+        }
+    }
+    void UpdatePowerupButtons()
+    {
+        explosionButton.interactable = powerupInventory.explosionCount > 0;
+        freezeButton.interactable = powerupInventory.freezeCount > 0;
+        laserButton.interactable = powerupInventory.laserCount > 0;
+    }
+
+
 
 }
