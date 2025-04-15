@@ -42,6 +42,9 @@ public class GameManagerBehaviour : MonoBehaviour
     public Text explosionCountText;
     public Text freezeCountText;
     public Text laserCountText;
+    private int explosionMilestone = 0;
+    private int freezeMilestone = 0;
+    private int laserMilestone = 0;
 
 
 
@@ -376,19 +379,28 @@ public class GameManagerBehaviour : MonoBehaviour
 
     public void CheckPowerupConditions()
     {
-        // Example condition: if you clear 3+ lines, grant an explosion powerup
-        if (board.linesCleared >= 3) {
+        // Explosion powerup for every 3 lines cleared
+        int explosionThreshold = 3;
+        if (board.linesCleared >= (explosionMilestone + 1) * explosionThreshold)
+        {
             powerupInventory.AddPowerup(PowerupType.Explosion);
+            explosionMilestone++;
         }
 
-        // Example condition: if you play for 60 seconds, grant freeze powerup
-        if (timer >= 60f) {
+        // Freeze powerup for every 60 seconds
+        int freezeThreshold = 60;
+        if (timer >= (freezeMilestone + 1) * freezeThreshold)
+        {
             powerupInventory.AddPowerup(PowerupType.Freeze);
+            freezeMilestone++;
         }
 
-        // Example condition: if the board is empty, grant fever powerup
-        if (score >= 500) {
+        // Laser powerup for every 500 score
+        int laserThreshold = 500;
+        if (score >= (laserMilestone + 1) * laserThreshold)
+        {
             powerupInventory.AddPowerup(PowerupType.Laser);
+            laserMilestone++;
         }
     }
     void UpdatePowerupUI()
