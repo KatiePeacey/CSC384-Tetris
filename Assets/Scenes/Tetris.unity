@@ -1661,6 +1661,7 @@ GameObject:
   - component: {fileID: 519420031}
   - component: {fileID: 519420029}
   - component: {fileID: 519420030}
+  - component: {fileID: 519420033}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -1786,6 +1787,18 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &519420033
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 519420028}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9317eaecfa9f8462b977f40a4e198319, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &525402509
 GameObject:
   m_ObjectHideFlags: 0
@@ -3077,6 +3090,7 @@ GameObject:
   - component: {fileID: 892261267}
   - component: {fileID: 892261269}
   - component: {fileID: 892261268}
+  - component: {fileID: 892261270}
   m_Layer: 7
   m_Name: FreezeOverlay
   m_TagString: Untagged
@@ -3116,7 +3130,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0, g: 0.78431374, b: 1, a: 0.039215688}
+  m_Color: {r: 0.15566039, g: 0.99249893, b: 1, a: 0}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -3141,6 +3155,18 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 892261266}
   m_CullTransparentMesh: 1
+--- !u!114 &892261270
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 892261266}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1c4ee669cc6424494ba78dc824ffaf22, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &903243052
 GameObject:
   m_ObjectHideFlags: 0
