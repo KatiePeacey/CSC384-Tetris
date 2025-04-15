@@ -98,6 +98,11 @@ public class Board : MonoBehaviour
                 row++;
              }
         }
+        if (IsBoardEmpty())
+        {
+            gameManager.ActivateFeverMode();
+        }
+
         
     }
 
@@ -205,9 +210,33 @@ public class Board : MonoBehaviour
                 }
             }
         }
-
         gameManager.SetScore(gameManager.score + 150);
+        
+        if (IsBoardEmpty())
+        {
+            gameManager.ActivateFeverMode();
+        }
+
     }
+
+    public bool IsBoardEmpty()
+    {
+        RectInt bounds = this.Bounds;
+
+        for (int x = bounds.xMin; x < bounds.xMax; x++)
+        {
+            for (int y = bounds.yMin; y < bounds.yMax; y++)
+            {
+                if (tilemap.HasTile(new Vector3Int(x, y, 0)))
+                {
+                    return false;
+                }
+            }
+        }
+
+        return true;
+    }
+
 
 
 }

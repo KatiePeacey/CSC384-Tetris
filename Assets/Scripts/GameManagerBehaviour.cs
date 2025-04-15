@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using System.Collections;
  
 public class GameManagerBehaviour : MonoBehaviour
 {
@@ -22,13 +23,17 @@ public class GameManagerBehaviour : MonoBehaviour
     public Text levelPBText;
     public Text abovePlayerText;
     public Text currentRank;
+    public Text SuperText;
     private bool isRunning = true;
     public Piece pieceManager;
     public Board board;
-
     public bool gameOver;
     public bool mainMenu;
     private ScoreboardManager scoreboardManager;
+    public bool isFeverMode;
+    private float feverEndTime;
+    public GameObject feverOverlay;
+    public float feverDuration = 10f;
 
     public void SetPlayerName(string name)
     {
@@ -75,6 +80,19 @@ public class GameManagerBehaviour : MonoBehaviour
         {
             IncreaseLevel();
         }
+        if (isFeverMode && Time.time >= feverEndTime)
+        {
+            isFeverMode = false;
+            SuperText.gameObject.SetActive(false);
+            StopCoroutine(PulseFeverTextColor());
+
+            Debug.Log("💤 Fever Mode Ended");
+
+            pieceManager.SetSpeed(GetSpeedForLevel());
+
+            // Turn off any fever effects
+        }
+
 
         UpdateLeaderboardDuringGameplay();
         ShowPB(score, level);
@@ -250,4 +268,42 @@ public class GameManagerBehaviour : MonoBehaviour
         ScoreboardManager.Instance.AddNewEntry(playerName, score, level);
         PopulateLeaderboardPanel();
     }
+
+    public void ActivateFeverMode()
+    {
+        isFeverMode = true;
+        feverOverlay.SetActive(true);
+        feverEndTime = Time.time + feverDuration;
+        if (SuperText) 
+        {
+            SuperText.gameObject.SetActive(true);
+            StartCoroutine(PulseFeverTextColor());
+        }
+
+
+        // Optional: Boost visuals/audio
+        Debug.Log("🔥 Fever Mode Activated!");
+
+        // Example: double speed
+        pieceManager.SetSpeed(GetSpeedForLevel() * 0.5f);
+
+        // Example: UI flash
+        // You could add a FeverOverlay.SetActive(true) if you have one
+    }
+    private IEnumerator PulseFeverTextColor()
+    {
+        Text text = SuperText.GetComponent<Text>();
+        float pulseSpeed = 2f;
+
+        while (true)
+        {
+            float t = Mathf.PingPong(Time.time * pulseSpeed, 1f);
+
+            Color pulseColor = Color.Lerp(Color.red, Color.yellow, t);
+            text.color = pulseColor;
+
+            yield return null;
+        }
+    }
+
 }
