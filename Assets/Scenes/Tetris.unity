@@ -5752,6 +5752,9 @@ MonoBehaviour:
   feverOverlay: {fileID: 1300869771}
   feverDuration: 10
   mainCamera: {fileID: 519420031}
+  musicSource: {fileID: 1202770469}
+  normalMusic: {fileID: 8300000, guid: 870f437cc9d814f65a37d85bf38ab350, type: 3}
+  superMusic: {fileID: 8300000, guid: 95e0f93995f1c4c9e8fa111aeb733f62, type: 3}
 --- !u!4 &1354974646
 Transform:
   m_ObjectHideFlags: 0

@@ -35,6 +35,9 @@ public class GameManagerBehaviour : MonoBehaviour
     public GameObject feverOverlay;
     public float feverDuration = 10f;
     public Camera mainCamera;
+    public AudioSource musicSource;
+    public AudioClip normalMusic;
+    public AudioClip superMusic;
 
 
     public void SetPlayerName(string name)
@@ -87,12 +90,9 @@ public class GameManagerBehaviour : MonoBehaviour
             isFeverMode = false;
             SuperText.gameObject.SetActive(false);
             StopCoroutine(PulseFeverTextColor());
-
-            Debug.Log("💤 Fever Mode Ended");
+            StartCoroutine(FadeMusic(normalMusic, 1f));
 
             pieceManager.SetSpeed(GetSpeedForLevel());
-
-            // Turn off any fever effects
         }
 
 
@@ -274,26 +274,28 @@ public class GameManagerBehaviour : MonoBehaviour
     public void ActivateFeverMode()
     {
         isFeverMode = true;
-        //feverOverlay.SetActive(true);
+        StartCoroutine(FadeMusic(superMusic, 1f));
         feverEndTime = Time.time + feverDuration;
         if (SuperText) 
         {
             SuperText.gameObject.SetActive(true);
             StartCoroutine(PulseFeverTextColor());
         }
-        StartCoroutine(FeverBackgroundEffect(Color.red, 3f)); // 3 seconds of fever effect
 
+        List<Color> feverColors = new List<Color>
+        {
+            Color.red,
+            Color.magenta,
+            Color.yellow,
+            Color.cyan,
+            Color.green
+        };
 
+        StartCoroutine(FeverBackgroundEffect(feverColors, 10f));
 
-        // Optional: Boost visuals/audio
-        Debug.Log("🔥 Fever Mode Activated!");
-
-        // Example: double speed
         pieceManager.SetSpeed(GetSpeedForLevel() * 0.5f);
-
-        // Example: UI flash
-        // You could add a FeverOverlay.SetActive(true) if you have one
     }
+
     private IEnumerator PulseFeverTextColor()
     {
         Text text = SuperText.GetComponent<Text>();
@@ -310,20 +312,61 @@ public class GameManagerBehaviour : MonoBehaviour
         }
     }
 
-    public IEnumerator FeverBackgroundEffect(Color targetColor, float duration)
+    public IEnumerator FeverBackgroundEffect(List<Color> feverColors, float duration)
     {
         Color originalColor = mainCamera.backgroundColor;
-        float t = 0f;
+        float timer = 0f;
+        int colorIndex = 0;
 
-        while (t < duration)
+        while (timer < duration)
         {
-            mainCamera.backgroundColor = Color.Lerp(originalColor, targetColor, Mathf.PingPong(t * 2f, 1f));
-            t += Time.deltaTime;
-            yield return null;
+            Color fromColor = feverColors[colorIndex % feverColors.Count];
+            Color toColor = feverColors[(colorIndex + 1) % feverColors.Count];
+            
+            float t = 0f;
+            float segmentDuration = 0.5f; // how long to stay between two colors
+
+            while (t < segmentDuration && timer < duration)
+            {
+                // Pulse with Mathf.PingPong for smoother transitions
+                float pulse = Mathf.PingPong(t * 2f, 1f);
+                mainCamera.backgroundColor = Color.Lerp(fromColor, toColor, pulse);
+
+                t += Time.deltaTime;
+                timer += Time.deltaTime;
+                yield return null;
+            }
+
+            colorIndex++;
         }
 
         mainCamera.backgroundColor = originalColor;
     }
+    IEnumerator FadeMusic(AudioClip newClip, float fadeTime = 1f)
+    {
+        float startVolume = musicSource.volume;
+
+        // Fade out
+        while (musicSource.volume > 0)
+        {
+            musicSource.volume -= startVolume * Time.deltaTime / fadeTime;
+            yield return null;
+        }
+
+        musicSource.Stop();
+        musicSource.clip = newClip;
+        musicSource.Play();
+
+        // Fade in
+        while (musicSource.volume < startVolume)
+        {
+            musicSource.volume += startVolume * Time.deltaTime / fadeTime;
+            yield return null;
+        }
+
+        musicSource.volume = startVolume;
+    }
+
 
 
 }
