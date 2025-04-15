@@ -12,6 +12,7 @@ public class Board : MonoBehaviour
     public GameObject LineBlastEffect;
     public AudioSource sfxSource;
     public AudioClip lineBlastSFX;
+    public int linesCleared = 0;
 
 
     public RectInt Bounds
@@ -93,6 +94,7 @@ public class Board : MonoBehaviour
         {
             if (IsLineFull(row)) {
                 LineClear(row);
+                linesCleared++;
                 gameManager.SetScore(gameManager.score + 50);
              } else {
                 row++;
@@ -211,7 +213,7 @@ public class Board : MonoBehaviour
             }
         }
         gameManager.SetScore(gameManager.score + 150);
-        
+
         if (IsBoardEmpty())
         {
             gameManager.ActivateFeverMode();
@@ -236,7 +238,5 @@ public class Board : MonoBehaviour
 
         return true;
     }
-
-
 
 }

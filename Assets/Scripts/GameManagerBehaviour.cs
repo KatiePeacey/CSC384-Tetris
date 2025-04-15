@@ -38,6 +38,11 @@ public class GameManagerBehaviour : MonoBehaviour
     public AudioSource musicSource;
     public AudioClip normalMusic;
     public AudioClip superMusic;
+    public PowerupInventory powerupInventory = new PowerupInventory();
+    public Text explosionCountText;
+    public Text freezeCountText;
+    public Text laserCountText;
+
 
 
     public void SetPlayerName(string name)
@@ -53,6 +58,7 @@ public class GameManagerBehaviour : MonoBehaviour
         timerText.text = "Time: " + timer.ToString("F2");
         scoreText.text = "Score: " + score;
         levelText.text = "Level: " + level;
+        board.linesCleared = 0;
         Debug.Log("Game stats reset.");
     }
 
@@ -95,7 +101,8 @@ public class GameManagerBehaviour : MonoBehaviour
             pieceManager.SetSpeed(GetSpeedForLevel());
         }
 
-
+        CheckPowerupConditions();
+        UpdatePowerupUI();
         UpdateLeaderboardDuringGameplay();
         ShowPB(score, level);
         ShowRank(score);
@@ -367,6 +374,28 @@ public class GameManagerBehaviour : MonoBehaviour
         musicSource.volume = startVolume;
     }
 
+    public void CheckPowerupConditions()
+    {
+        // Example condition: if you clear 3+ lines, grant an explosion powerup
+        if (board.linesCleared >= 3) {
+            powerupInventory.AddPowerup(PowerupType.Explosion);
+        }
 
+        // Example condition: if you play for 60 seconds, grant freeze powerup
+        if (timer >= 60f) {
+            powerupInventory.AddPowerup(PowerupType.Freeze);
+        }
+
+        // Example condition: if the board is empty, grant fever powerup
+        if (score >= 500) {
+            powerupInventory.AddPowerup(PowerupType.Laser);
+        }
+    }
+    void UpdatePowerupUI()
+    {
+        explosionCountText.text = "Explosion: " + powerupInventory.explosionCount;
+        freezeCountText.text = "Freeze: " + powerupInventory.freezeCount;
+        laserCountText.text = "Laser: " + powerupInventory.laserCount;
+    }
 
 }
