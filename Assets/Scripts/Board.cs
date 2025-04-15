@@ -191,6 +191,23 @@ public class Board : MonoBehaviour
         gameManager.SetScore(gameManager.score + 100);
     }
 
+    public void ClearAreaAround(Vector3Int center, int radius)
+    {
+        for (int x = -radius; x <= radius; x++)
+        {
+            for (int y = -radius; y <= radius; y++)
+            {
+                Vector3Int pos = new Vector3Int(center.x + x, center.y + y, 0);
+
+                if (Bounds.Contains(new Vector2Int(pos.x, pos.y)))
+                {
+                    tilemap.SetTile(pos, null);
+                }
+            }
+        }
+
+        gameManager.SetScore(gameManager.score + 150);
+    }
 
 
 }

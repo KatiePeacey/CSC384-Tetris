@@ -17,6 +17,8 @@ public class Piece : MonoBehaviour
     private float originalStepDelay;
     private GameObject activeSlowEffect;
     public GameObject FreezeScreen;
+    public GameObject bombEffectPrefab;
+    public AudioClip bombSound;
 
 
     public void Initialize(Board board, Vector3Int position, TetrominoData data)
@@ -69,6 +71,9 @@ public class Piece : MonoBehaviour
         {
             ActivateSlowTime(7f, 2f);
         }
+        if (Input.GetKeyDown(KeyCode.B)) {
+            UseBombPowerUp();
+        }
 
         if (isSlowTimeActive && Time.time >= slowTimeEnd)
         {
@@ -85,10 +90,8 @@ public class Piece : MonoBehaviour
         }
         if (isSlowTimeActive && activeSlowEffect != null)
         {
-            // Convert piece's tile position to world space
             Vector3 worldPos = board.tilemap.CellToWorld(this.position);
             
-            // Offset if needed (to center)
             worldPos += new Vector3(0.5f, 0.5f, 0f);
 
             activeSlowEffect.transform.position = worldPos;
@@ -99,12 +102,9 @@ public class Piece : MonoBehaviour
     }
     private void ResetSlowTime()
     {
-        // Reset the game speed after slow time ends
         this.stepDelay = originalStepDelay;
         isSlowTimeActive = false;
-        ScreenShake.Instance.Shake(0.5f, 0.4f); // Quick icy jolt
 
-        // Reset the music pitch
         AudioManager.Instance?.ResetMusicPitch();
         
         FreezeScreen.SetActive(false);
@@ -231,7 +231,7 @@ public class Piece : MonoBehaviour
 
     private void UseLineBlaster()
     {
-        int y = this.position.y; // Get current Y row of the piece
+        int y = this.position.y;
 
         if (board.IsRowWithinBounds(y)) {
             board.ClearSingleLine(y);
@@ -239,23 +239,41 @@ public class Piece : MonoBehaviour
     }
     public void ActivateSlowTime(float duration, float slowSpeed)
     {
-        ScreenShake.Instance.Shake(0.5f, 0.4f);
-
         FreezeScreen.SetActive(true);
 
-        // Slow down the music pitch
-        AudioManager.Instance?.SetMusicPitch(0.5f);  // Adjust music pitch for effect
+        AudioManager.Instance?.SetMusicPitch(0.5f);
 
-        // Adjust game speed
         if (!isSlowTimeActive)
         {
-            originalStepDelay = this.stepDelay;  // Save original speed before slow time
+            originalStepDelay = this.stepDelay;
         }
 
-        this.stepDelay = slowSpeed;  // Adjust step delay to slow down the game
-        slowTimeEnd = Time.time + duration;  // Calculate when slow time should end
+        this.stepDelay = slowSpeed;
+        slowTimeEnd = Time.time + duration;
         isSlowTimeActive = true;
     }
+
+    private void UseBombPowerUp()
+    {
+        Vector3Int center = this.position;
+
+        if (bombEffectPrefab != null)
+        {
+            Vector3 worldPos = board.tilemap.CellToWorld(position) + new Vector3(0.5f, 0.5f, 0f);
+            Instantiate(bombEffectPrefab, worldPos, Quaternion.identity);
+        }
+
+        if (bombSound != null)
+        {
+            AudioSource.PlayClipAtPoint(bombSound, Camera.main.transform.position);
+        }
+        ScreenShake.Instance?.Shake(0.4f, 0.3f);
+
+        board.ClearAreaAround(center, 1);
+
+        board.SpawnPiece();
+    }
+
 
 
 
