@@ -1933,11 +1933,6 @@ MonoBehaviour:
   m_ChildScaleWidth: 0
   m_ChildScaleHeight: 0
   m_ReverseArrangement: 0
---- !u!1 &618194538 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 9190535705571092948, guid: 1799a95299ccf4d22ab9ef88b5789c2f, type: 3}
-  m_PrefabInstance: {fileID: 180288871674185822}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &619394800
 GameObject:
   m_ObjectHideFlags: 0
@@ -3090,7 +3085,6 @@ GameObject:
   - component: {fileID: 892261267}
   - component: {fileID: 892261269}
   - component: {fileID: 892261268}
-  - component: {fileID: 892261270}
   m_Layer: 7
   m_Name: FreezeOverlay
   m_TagString: Untagged
@@ -3130,7 +3124,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.15566039, g: 0.99249893, b: 1, a: 0}
+  m_Color: {r: 0, g: 0.78431374, b: 1, a: 0.039215688}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -3155,18 +3149,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 892261266}
   m_CullTransparentMesh: 1
---- !u!114 &892261270
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 892261266}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1c4ee669cc6424494ba78dc824ffaf22, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &903243052
 GameObject:
   m_ObjectHideFlags: 0
@@ -4419,7 +4401,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   stepDelay: 1
   lockDelay: 0.5
-  FreezeEffect: {fileID: 618194538}
   FreezeScreen: {fileID: 1856341796}
 --- !u!114 &1148283361
 MonoBehaviour:
@@ -6844,79 +6825,6 @@ MonoBehaviour:
   gameOverMenu: {fileID: 1540142128}
   game: {fileID: 371883240}
   MainMenu: {fileID: 720206119}
---- !u!1001 &180288871674185822
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    serializedVersion: 3
-    m_TransformParent: {fileID: 0}
-    m_Modifications:
-    - target: {fileID: 3784919926625973907, guid: 1799a95299ccf4d22ab9ef88b5789c2f, type: 3}
-      propertyPath: moveWithTransform
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6630389240617563716, guid: 1799a95299ccf4d22ab9ef88b5789c2f, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6630389240617563716, guid: 1799a95299ccf4d22ab9ef88b5789c2f, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6630389240617563716, guid: 1799a95299ccf4d22ab9ef88b5789c2f, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6630389240617563716, guid: 1799a95299ccf4d22ab9ef88b5789c2f, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 0.7071068
-      objectReference: {fileID: 0}
-    - target: {fileID: 6630389240617563716, guid: 1799a95299ccf4d22ab9ef88b5789c2f, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: -0.7071068
-      objectReference: {fileID: 0}
-    - target: {fileID: 6630389240617563716, guid: 1799a95299ccf4d22ab9ef88b5789c2f, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6630389240617563716, guid: 1799a95299ccf4d22ab9ef88b5789c2f, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6630389240617563716, guid: 1799a95299ccf4d22ab9ef88b5789c2f, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: -90
-      objectReference: {fileID: 0}
-    - target: {fileID: 6630389240617563716, guid: 1799a95299ccf4d22ab9ef88b5789c2f, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6630389240617563716, guid: 1799a95299ccf4d22ab9ef88b5789c2f, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8316058910397595003, guid: 1799a95299ccf4d22ab9ef88b5789c2f, type: 3}
-      propertyPath: m_SortingLayer
-      value: 5
-      objectReference: {fileID: 0}
-    - target: {fileID: 8316058910397595003, guid: 1799a95299ccf4d22ab9ef88b5789c2f, type: 3}
-      propertyPath: m_SortingLayerID
-      value: 812328671
-      objectReference: {fileID: 0}
-    - target: {fileID: 9190535705571092948, guid: 1799a95299ccf4d22ab9ef88b5789c2f, type: 3}
-      propertyPath: m_Name
-      value: FreezeEffect
-      objectReference: {fileID: 0}
-    - target: {fileID: 9190535705571092948, guid: 1799a95299ccf4d22ab9ef88b5789c2f, type: 3}
-      propertyPath: m_Layer
-      value: 7
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-    m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: 1799a95299ccf4d22ab9ef88b5789c2f, type: 3}
 --- !u!1001 &926004116600414663
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -7166,5 +7074,4 @@ SceneRoots:
   - {fileID: 658387961}
   - {fileID: 1735490117}
   - {fileID: 1820795053}
-  - {fileID: 180288871674185822}
   - {fileID: 1856341797}

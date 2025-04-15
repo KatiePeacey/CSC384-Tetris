@@ -15,7 +15,6 @@ public class Piece : MonoBehaviour
     private bool isSlowTimeActive = false;
     private float slowTimeEnd = 0f;
     private float originalStepDelay;
-    public GameObject FreezeEffect;
     private GameObject activeSlowEffect;
     public GameObject FreezeScreen;
 
@@ -108,7 +107,6 @@ public class Piece : MonoBehaviour
         // Reset the music pitch
         AudioManager.Instance?.ResetMusicPitch();
         
-        FreezeOverlayFader.Instance?.FadeOut(1f);
         FreezeScreen.SetActive(false);
 
     }
@@ -241,17 +239,9 @@ public class Piece : MonoBehaviour
     }
     public void ActivateSlowTime(float duration, float slowSpeed)
     {
-        ScreenShake.Instance.Shake(0.5f, 0.4f); // Quick icy jolt
+        ScreenShake.Instance.Shake(0.5f, 0.4f);
 
-        if (FreezeEffect != null)
-        {
-            activeSlowEffect = Instantiate(FreezeEffect, transform);
-            activeSlowEffect.transform.localPosition = Vector3.zero;
-
-        }
         FreezeScreen.SetActive(true);
-        FreezeOverlayFader.Instance?.FadeIn(0.5f);
-
 
         // Slow down the music pitch
         AudioManager.Instance?.SetMusicPitch(0.5f);  // Adjust music pitch for effect
