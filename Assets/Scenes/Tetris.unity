@@ -5751,6 +5751,7 @@ MonoBehaviour:
   isFeverMode: 0
   feverOverlay: {fileID: 1300869771}
   feverDuration: 10
+  mainCamera: {fileID: 519420031}
 --- !u!4 &1354974646
 Transform:
   m_ObjectHideFlags: 0

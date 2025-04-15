@@ -34,6 +34,8 @@ public class GameManagerBehaviour : MonoBehaviour
     private float feverEndTime;
     public GameObject feverOverlay;
     public float feverDuration = 10f;
+    public Camera mainCamera;
+
 
     public void SetPlayerName(string name)
     {
@@ -272,13 +274,15 @@ public class GameManagerBehaviour : MonoBehaviour
     public void ActivateFeverMode()
     {
         isFeverMode = true;
-        feverOverlay.SetActive(true);
+        //feverOverlay.SetActive(true);
         feverEndTime = Time.time + feverDuration;
         if (SuperText) 
         {
             SuperText.gameObject.SetActive(true);
             StartCoroutine(PulseFeverTextColor());
         }
+        StartCoroutine(FeverBackgroundEffect(Color.red, 3f)); // 3 seconds of fever effect
+
 
 
         // Optional: Boost visuals/audio
@@ -305,5 +309,21 @@ public class GameManagerBehaviour : MonoBehaviour
             yield return null;
         }
     }
+
+    public IEnumerator FeverBackgroundEffect(Color targetColor, float duration)
+    {
+        Color originalColor = mainCamera.backgroundColor;
+        float t = 0f;
+
+        while (t < duration)
+        {
+            mainCamera.backgroundColor = Color.Lerp(originalColor, targetColor, Mathf.PingPong(t * 2f, 1f));
+            t += Time.deltaTime;
+            yield return null;
+        }
+
+        mainCamera.backgroundColor = originalColor;
+    }
+
 
 }
