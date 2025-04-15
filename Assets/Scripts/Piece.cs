@@ -17,6 +17,7 @@ public class Piece : MonoBehaviour
     private float originalStepDelay;
     public GameObject FreezeEffect;
     private GameObject activeSlowEffect;
+    public GameObject FreezeScreen;
 
 
     public void Initialize(Board board, Vector3Int position, TetrominoData data)
@@ -105,6 +106,8 @@ public class Piece : MonoBehaviour
 
         // Reset the music pitch
         AudioManager.Instance?.ResetMusicPitch();
+        
+        FreezeScreen.SetActive(false);
     }
 
     private void Step()
@@ -241,6 +244,7 @@ public class Piece : MonoBehaviour
             activeSlowEffect.transform.localPosition = Vector3.zero;
 
         }
+        FreezeScreen.SetActive(true);
 
         // Slow down the music pitch
         AudioManager.Instance?.SetMusicPitch(0.5f);  // Adjust music pitch for effect
