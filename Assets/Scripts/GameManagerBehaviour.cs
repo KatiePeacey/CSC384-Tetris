@@ -48,6 +48,9 @@ public class GameManagerBehaviour : MonoBehaviour
     public Button explosionButton;
     public Button freezeButton;
     public Button laserButton;
+    public Text powerupMessageText;
+    public AudioSource audioSource;
+    public AudioClip powerupDing;
 
 
 
@@ -382,22 +385,41 @@ public class GameManagerBehaviour : MonoBehaviour
         musicSource.volume = startVolume;
     }
 
+    void ShowPowerupMessage(string message)
+    {
+        powerupMessageText.text = message;
+        powerupMessageText.gameObject.SetActive(true);
+        if (powerupDing && audioSource) {
+            audioSource.PlayOneShot(powerupDing);
+        }
+
+        CancelInvoke("HidePowerupMessage");
+        Invoke("HidePowerupMessage", 2f);
+    }
+
+    void HidePowerupMessage()
+    {
+        powerupMessageText.gameObject.SetActive(false);
+    }
+
     public void CheckPowerupConditions()
     {
         // Explosion powerup for every 3 lines cleared
-        int explosionThreshold = 3;
+        int explosionThreshold = 10;
         if (board.linesCleared >= (explosionMilestone + 1) * explosionThreshold)
         {
             powerupInventory.AddPowerup(PowerupType.Explosion);
             explosionMilestone++;
+            ShowPowerupMessage("Bomb Powerup Awarded!");
         }
 
-        // Freeze powerup for every 60 seconds
-        int freezeThreshold = 60;
+        // Freeze powerup for every 90 seconds
+        int freezeThreshold = 90;
         if (timer >= (freezeMilestone + 1) * freezeThreshold)
         {
             powerupInventory.AddPowerup(PowerupType.Freeze);
             freezeMilestone++;
+            ShowPowerupMessage("Slow Motion Powerup Awarded!");
         }
 
         // Laser powerup for every 500 score
@@ -406,6 +428,7 @@ public class GameManagerBehaviour : MonoBehaviour
         {
             powerupInventory.AddPowerup(PowerupType.Laser);
             laserMilestone++;
+            ShowPowerupMessage("Laser Powerup Awarded!");
         }
     }
     void UpdatePowerupUI()
