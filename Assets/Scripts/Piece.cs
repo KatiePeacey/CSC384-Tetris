@@ -21,7 +21,6 @@ public class Piece : MonoBehaviour
     public AudioClip bombSound;
     private PowerupInventory powerupInventory;
 
-
     public void Initialize(Board board, Vector3Int position, TetrominoData data)
     {
         this.board = board;
@@ -63,35 +62,6 @@ public class Piece : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.Space)) {
             HardDrop();
-        }
-        
-        // if (Input.GetKeyDown(KeyCode.L)) {
-        //     UseLineBlaster();
-        // }
-        // if (Input.GetKeyDown(KeyCode.Z))
-        // {
-        //     ActivateSlowTime(7f, 2f);
-        // }
-        // if (Input.GetKeyDown(KeyCode.B)) {
-        //     UseBombPowerUp();
-        // }
-
-        if (Input.GetKeyDown(KeyCode.Alpha1)) {
-            if (powerupInventory.UsePowerup(PowerupType.Explosion)) {
-                UseBombPowerUp();
-            }
-        }
-
-        if (Input.GetKeyDown(KeyCode.Alpha2)) {
-            if (powerupInventory.UsePowerup(PowerupType.Freeze)) {
-                ActivateSlowTime(7f, 2f);
-            }
-        }
-
-        if (Input.GetKeyDown(KeyCode.Alpha3)) {
-            if (powerupInventory.UsePowerup(PowerupType.Laser)) {
-                UseLineBlaster();
-            }
         }
 
         if (isSlowTimeActive && Time.time >= slowTimeEnd)
