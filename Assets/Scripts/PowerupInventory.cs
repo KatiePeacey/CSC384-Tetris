@@ -8,14 +8,11 @@ public enum PowerupType
 
 public class PowerupInventory
 {
-    // Declare the counts for the various powerups
     public int explosionCount = 0;
     public int freezeCount = 0;
     public int laserCount = 0;
     private const int MAX_POWERUP_COUNT = 10;
 
-
-    // Method to add a powerup (example)
     public void AddPowerup(PowerupType type)
     {
         switch (type)
@@ -35,8 +32,6 @@ public class PowerupInventory
         }
     }
 
-
-    // Method to use a powerup (example)
     public bool UsePowerup(PowerupType type)
     {
         switch (type)
@@ -58,7 +53,7 @@ public class PowerupInventory
             case PowerupType.Laser:
                 if (laserCount > 0)
                 {
-                    laserCount--; // Decrease laser count when used
+                    laserCount--;
                     return true;
                 }
                 break;
@@ -66,6 +61,6 @@ public class PowerupInventory
                 break;
         }
 
-        return false; // If the powerup is not available, return false
+        return false;
     }
 }

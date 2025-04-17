@@ -5,8 +5,8 @@ using System.Linq;
 
 public class CustomTetrominoBuilder : MonoBehaviour
 {
-    public Toggle togglePrefab;         // Prefab for each toggle cell
-    public Transform gridParent;        // Parent for grid layout (should have Grid Layout Group)
+    public Toggle togglePrefab;
+    public Transform gridParent;
     public Button submitButton;
     public Button resetButton;
     public Text messageText;
@@ -39,7 +39,6 @@ public class CustomTetrominoBuilder : MonoBehaviour
                 gridToggles.Add(newToggle);
             }
         }
-        Debug.Log("Total Toggles: " + gridToggles.Count);
     }
 
 
@@ -48,12 +47,9 @@ public class CustomTetrominoBuilder : MonoBehaviour
         Vector2Int pos = new Vector2Int(x, y);
 
         if (isOn && !customShape.Contains(pos))
-            customShape.Add(pos);  // Add position if toggle is on and not already in the list
+            customShape.Add(pos);
         else if (!isOn && customShape.Contains(pos))
-            customShape.Remove(pos);  // Remove position if toggle is off and in the list
-
-        Debug.Log("Current Custom Shape: " + string.Join(", ", customShape.Select(cell => cell.ToString()).ToArray()));
-
+            customShape.Remove(pos);
     }
 
 
@@ -65,14 +61,7 @@ public class CustomTetrominoBuilder : MonoBehaviour
             messageText.color = Color.red;
             return;
         }
-        Debug.Log("Custom Shape Before Normalizing:");
-        foreach (var cell in customShape)
-        {
-            Debug.Log(cell);
-        }
-
-
-
+        
         int minX = int.MaxValue, maxX = int.MinValue;
         int minY = int.MaxValue, maxY = int.MinValue;
 
@@ -84,11 +73,9 @@ public class CustomTetrominoBuilder : MonoBehaviour
             maxY = Mathf.Max(maxY, cell.y);
         }
 
-        // Find center of bounds
         float centerX = (minX + maxX) / 2f;
         float centerY = (minY + maxY) / 2f;
 
-        // Normalize to top-left origin
         Vector2Int[] normalizedShape = new Vector2Int[customShape.Count];
         for (int i = 0; i < customShape.Count; i++)
         {
@@ -98,19 +85,13 @@ public class CustomTetrominoBuilder : MonoBehaviour
             );
         }
 
-
-        // Save the custom shape
         Data.Cells[Tetromino.Custom] = normalizedShape;
         Debug.Log("Normalized Shape:");
         foreach (var cell in normalizedShape)
         {
             Debug.Log(cell);
         }
-        foreach (var cell in normalizedShape)
-        {
-            if (cell.x < 0 || cell.y < 0)
-                Debug.LogWarning($"Warning: Cell out of bounds - {cell}");
-        }
+        
 
         messageText.text = "Custom piece saved!";
         messageText.color = Color.green;

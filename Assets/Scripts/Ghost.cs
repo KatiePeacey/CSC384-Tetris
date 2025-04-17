@@ -38,7 +38,7 @@ public class Ghost : MonoBehaviour
         {
             if (i >= this.trackingPiece.cells.Length)
             {
-                break;  // Exit the loop if the index is out of bounds
+                break;
             }
             this.cells[i] = this.trackingPiece.cells[i];
         }

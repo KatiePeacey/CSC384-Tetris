@@ -8,7 +8,6 @@ public class ScoreboardItemUI : MonoBehaviour
     public Text Score;
     public Text LevelCompleted;
 
-
     public void SetData(int rank, ScoreboardItem item,  bool isPlayer)
     {
         Index.text = rank.ToString();

@@ -5,7 +5,6 @@ using System.IO;
 public class ScoreboardManager : MonoBehaviour
 {
     public static ScoreboardManager Instance { get; private set; }
-
     public List<ScoreboardItem> scoreboardList = new List<ScoreboardItem>();
     public List<ScoreboardItem> ScoreboardList => scoreboardList;
     private string filename;
@@ -41,7 +40,6 @@ public class ScoreboardManager : MonoBehaviour
             SaveScoreboardData();
         }
     }
-
 
     private void SaveScoreboardData()
     {

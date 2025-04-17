@@ -257,7 +257,7 @@ public class GameManagerBehaviour : MonoBehaviour
     private void ShowRank(int score)
     {
         List<ScoreboardItem> sortedList = new List<ScoreboardItem>(scoreboardManager.ScoreboardList);
-        sortedList.Sort((a, b) => b.score.CompareTo(a.score)); // ensure correct sort
+        sortedList.Sort((a, b) => b.score.CompareTo(a.score));
 
 
         int playerRank = sortedList.FindIndex(item => item.playerName == playerName);
@@ -268,7 +268,6 @@ public class GameManagerBehaviour : MonoBehaviour
         }
         if (previousRank != -1 && playerRank < previousRank)
         {
-            // Rank has improved (number went down)
             if (audioSource && rankUpSFX)
             {
                 audioSource.PlayOneShot(rankUpSFX);
@@ -395,11 +394,10 @@ public class GameManagerBehaviour : MonoBehaviour
             Color toColor = feverColors[(colorIndex + 1) % feverColors.Count];
             
             float t = 0f;
-            float segmentDuration = 0.5f; // how long to stay between two colors
+            float segmentDuration = 0.5f;
 
             while (t < segmentDuration && timer < duration)
             {
-                // Pulse with Mathf.PingPong for smoother transitions
                 float pulse = Mathf.PingPong(t * 2f, 1f);
                 mainCamera.backgroundColor = Color.Lerp(fromColor, toColor, pulse);
 
@@ -417,7 +415,6 @@ public class GameManagerBehaviour : MonoBehaviour
     {
         float startVolume = musicSource.volume;
 
-        // Fade out
         while (musicSource.volume > 0)
         {
             musicSource.volume -= startVolume * Time.deltaTime / fadeTime;
@@ -428,7 +425,6 @@ public class GameManagerBehaviour : MonoBehaviour
         musicSource.clip = newClip;
         musicSource.Play();
 
-        // Fade in
         while (musicSource.volume < startVolume)
         {
             musicSource.volume += startVolume * Time.deltaTime / fadeTime;
@@ -457,7 +453,6 @@ public class GameManagerBehaviour : MonoBehaviour
 
     public void CheckPowerupConditions()
     {
-        // Explosion powerup for every 3 lines cleared
         int explosionThreshold = 10;
         if (board.linesCleared >= (explosionMilestone + 1) * explosionThreshold)
         {
@@ -466,7 +461,6 @@ public class GameManagerBehaviour : MonoBehaviour
             ShowPowerupMessage("Bomb Powerup Awarded!");
         }
 
-        // Freeze powerup for every 90 seconds
         int freezeThreshold = 90;
         if (timer >= (freezeMilestone + 1) * freezeThreshold)
         {
@@ -475,7 +469,6 @@ public class GameManagerBehaviour : MonoBehaviour
             ShowPowerupMessage("Slow Motion Powerup Awarded!");
         }
 
-        // Laser powerup for every 500 score
         int laserThreshold = 500;
         if (score >= (laserMilestone + 1) * laserThreshold)
         {
@@ -490,7 +483,6 @@ public class GameManagerBehaviour : MonoBehaviour
         freezeCountText.text = "" + powerupInventory.freezeCount;
         laserCountText.text = "" + powerupInventory.laserCount;
     }
-
     public void UseExplosionPowerup()
     {
         if (powerupInventory.explosionCount > 0)
@@ -502,7 +494,6 @@ public class GameManagerBehaviour : MonoBehaviour
             UpdatePowerupButtons();
         }
     }
-
     public void UseFreezePowerup()
     {
         if (powerupInventory.freezeCount > 0)
@@ -513,7 +504,6 @@ public class GameManagerBehaviour : MonoBehaviour
             UpdatePowerupButtons();
         }
     }
-
     public void UseLaserPowerup()
     {
         if (powerupInventory.laserCount > 0)
@@ -530,5 +520,4 @@ public class GameManagerBehaviour : MonoBehaviour
         freezeButton.interactable = powerupInventory.freezeCount > 0;
         laserButton.interactable = powerupInventory.laserCount > 0;
     }
-
 }

@@ -3,7 +3,6 @@ using UnityEngine;
 public class ScreenShake : MonoBehaviour
 {
     public static ScreenShake Instance;
-
     private Vector3 originalPos;
     private float shakeDuration = 0f;
     private float shakeMagnitude = 0.1f;
@@ -19,7 +18,7 @@ public class ScreenShake : MonoBehaviour
         if (shakeDuration > 0)
         {
             Vector3 randomPoint = originalPos + Random.insideUnitSphere * shakeMagnitude;
-            randomPoint.z = originalPos.z; // Keep original z depth
+            randomPoint.z = originalPos.z;
             transform.localPosition = randomPoint;
             shakeDuration -= Time.deltaTime;
         }

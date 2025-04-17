@@ -56,7 +56,7 @@ public static class Data
         if (Cells.ContainsKey(Tetromino.Custom))
             return Cells[Tetromino.Custom];
 
-        return new Vector2Int[0]; // fallback
+        return new Vector2Int[0];
     }
 
 }
