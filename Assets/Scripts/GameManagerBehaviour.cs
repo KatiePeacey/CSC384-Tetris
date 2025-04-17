@@ -29,7 +29,8 @@ public class GameManagerBehaviour : MonoBehaviour
     public Board board;
     public bool gameOver;
     public bool mainMenu;
-    private ScoreboardManager scoreboardManager;
+    public ScoreboardManager scoreboardManager;
+    public string currentPlayerName;
     public bool isFeverMode;
     private float feverEndTime;
     public GameObject feverOverlay;
@@ -57,7 +58,6 @@ public class GameManagerBehaviour : MonoBehaviour
     private int previousRank = -1;
     public AudioClip rankUpSFX;
     private Coroutine rankFlashCoroutine;
-
 
 
 
@@ -144,7 +144,6 @@ public class GameManagerBehaviour : MonoBehaviour
         gameOver = false;
         mainMenu = true;
     }
-
     public void GameOver()
     {
         board.tilemap.ClearAllTiles();
@@ -305,13 +304,14 @@ public class GameManagerBehaviour : MonoBehaviour
 
         foreach (ScoreboardItem item in scores)
         {
+            bool isPlayer = item.playerName == playerName;
             GameObject go = Instantiate(scoreboardItemPrefab, ScoreboardPanel);
             Debug.Log($"Creating leaderboard item {index} for player: {item.playerName}, score: {item.score}, level: {item.levelCompleted}");
             ScoreboardItemUI itemUI = go.GetComponent<ScoreboardItemUI>();
 
             if (itemUI != null)
             {
-                itemUI.SetData(index, item);
+                itemUI.SetData(index, item, isPlayer);
             }
 
             if (go == null)

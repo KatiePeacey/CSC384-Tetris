@@ -7186,6 +7186,7 @@ MonoBehaviour:
   PlayerName: {fileID: 1852721766}
   Score: {fileID: 1544137038}
   LevelCompleted: {fileID: 925324562}
+  playerBackground: {fileID: 0}
 --- !u!1 &593038603
 GameObject:
   m_ObjectHideFlags: 0
@@ -11318,6 +11319,8 @@ MonoBehaviour:
   board: {fileID: 1148283361}
   gameOver: 0
   mainMenu: 0
+  scoreboardManager: {fileID: 658387962}
+  currentPlayerName: 
   isFeverMode: 0
   feverOverlay: {fileID: 1300869771}
   feverDuration: 10
