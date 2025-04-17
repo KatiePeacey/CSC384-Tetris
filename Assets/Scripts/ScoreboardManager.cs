@@ -29,17 +29,19 @@ public class ScoreboardManager : MonoBehaviour
 
         if (existingItem == null)
         {
-            ScoreboardItem newItem = new ScoreboardItem(playerName, score, levelCompleted);
-            scoreboardList.Add(newItem);
+            scoreboardList.Add(new ScoreboardItem(playerName, score, levelCompleted));
+            SortLeaderboard();
+            SaveScoreboardData();
         }
         else if (score > existingItem.score)
         {
             existingItem.score = score;
             existingItem.levelCompleted = levelCompleted;
+            SortLeaderboard();
+            SaveScoreboardData();
         }
-        SortLeaderboard();
-        SaveScoreboardData();
     }
+
 
     private void SaveScoreboardData()
     {

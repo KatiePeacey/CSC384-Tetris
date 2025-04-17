@@ -51,6 +51,7 @@ public class GameManagerBehaviour : MonoBehaviour
     public Text powerupMessageText;
     public AudioSource audioSource;
     public AudioClip powerupDing;
+    private int lastSubmittedScore = 0;
 
 
 
@@ -114,7 +115,6 @@ public class GameManagerBehaviour : MonoBehaviour
         CheckPowerupConditions();
         UpdatePowerupButtons();
         UpdatePowerupUI();
-        UpdateLeaderboardDuringGameplay();
         ShowPB(score, level);
         ShowRank(score);
     }
@@ -147,6 +147,7 @@ public class GameManagerBehaviour : MonoBehaviour
         gameOver = true;
         mainMenu = false;
         ScoreboardManager.Instance.AddNewEntry(playerName, score, level);
+        UpdateLeaderboardDuringGameplay();
         ShowRank(score);
         PopulateLeaderboardPanel();
     }
@@ -169,7 +170,6 @@ public class GameManagerBehaviour : MonoBehaviour
         pieceManager.SetSpeed(GetSpeedForLevel());
         SetScore(score + 100);
         SetLevel(level + 1);
-        UpdateLeaderboardDuringGameplay();
         ShowPB(score, level);
         ShowRank(score);
     }
@@ -183,16 +183,22 @@ public class GameManagerBehaviour : MonoBehaviour
     {
         this.score = score;
         scoreText.text = "Score: " + score.ToString();
-        UpdateLeaderboardDuringGameplay();
+        
+        if (score > lastSubmittedScore)
+        {
+            lastSubmittedScore = score;
+            UpdateLeaderboardDuringGameplay();
+        }
+
         ShowPB(score, level);
         ShowRank(score);
     }
+
 
     public void SetLevel(int level)
     {
         this.level = level;
         levelText.text = "Level: " + level.ToString();
-        UpdateLeaderboardDuringGameplay();
         ShowPB(score, level);
         ShowRank(score);
     }
