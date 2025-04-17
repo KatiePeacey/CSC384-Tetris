@@ -54,6 +54,9 @@ public class GameManagerBehaviour : MonoBehaviour
     public AudioSource highScore;
     public AudioClip newScore;
     private int lastSubmittedScore = 0;
+    private int previousRank = -1;
+    public AudioClip rankUpSFX;
+    private Coroutine rankFlashCoroutine;
 
 
 
@@ -250,6 +253,20 @@ public class GameManagerBehaviour : MonoBehaviour
         {
             return;
         }
+        if (previousRank != -1 && playerRank < previousRank)
+        {
+            // Rank has improved (number went down)
+            if (audioSource && rankUpSFX)
+            {
+                audioSource.PlayOneShot(rankUpSFX);
+            }
+            if (rankFlashCoroutine != null) {
+                StopCoroutine(rankFlashCoroutine);
+            }
+
+            rankFlashCoroutine = StartCoroutine(FlashRankColor(Color.yellow, 2f));
+        }
+        previousRank = playerRank;
 
         currentRank.text = $"{playerRank + 1}";
 
@@ -268,6 +285,13 @@ public class GameManagerBehaviour : MonoBehaviour
             currentRank.color = Color.green;
         }
     }
+    private IEnumerator FlashRankColor(Color flashColor, float duration)
+    {
+        currentRank.color = flashColor;
+        yield return new WaitForSeconds(duration);
+        currentRank.color = Color.white;
+    }
+
 
     public void PopulateLeaderboardPanel()
     {
