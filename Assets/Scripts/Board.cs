@@ -42,12 +42,15 @@ public class Board : MonoBehaviour
             int random = Random.Range(0, this.tetrominoes.Length);
             TetrominoData data = this.tetrominoes[random];
 
-            // Skip if it's the custom piece but hasn't been defined yet
             if (data.tetromino == Tetromino.Custom)
             {
-                if (!Data.Cells.ContainsKey(Tetromino.Custom) || Data.Cells[Tetromino.Custom].Length == 0)
-                    continue;
+                if (Data.Cells[Tetromino.Custom].Length > 0)
+                {
+                    this.activePiece.Initialize(this, this.spawnPosition, data);
+                    break;
+                }
             }
+
             this.activePiece.Initialize(this, this.spawnPosition, data);
             break;
         }

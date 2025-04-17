@@ -25,6 +25,7 @@ public struct TetrominoData
         this.cells = Data.Cells[this.tetromino];
         this.wallKicks = Data.WallKicks[this.tetromino];
     }
+    
 
     // Function to spawn the Tetromino at a specific position
     public void SpawnTetromino(Tilemap tilemap, Tetromino tetromino, Vector2Int spawnPosition)
@@ -46,5 +47,12 @@ public struct TetrominoData
             tilemap.SetTile(position, tile);  // Place the tile at the calculated position
         }
     }
+    public TetrominoData(TetrominoData other)
+{
+    this.tetromino = other.tetromino;
+    this.tile = other.tile;
+    this.cells = (Vector2Int[])other.cells.Clone();  // Clone the cells array to avoid reference issues
+    this.wallKicks = (Vector2Int[,])other.wallKicks.Clone();  // Clone the wallKicks array
+}
 
 }

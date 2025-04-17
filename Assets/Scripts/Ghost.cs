@@ -36,6 +36,10 @@ public class Ghost : MonoBehaviour
     {
         for (int i = 0; i < this.cells.Length; i++)
         {
+            if (i >= this.trackingPiece.cells.Length)
+            {
+                break;  // Exit the loop if the index is out of bounds
+            }
             this.cells[i] = this.trackingPiece.cells[i];
         }
     }

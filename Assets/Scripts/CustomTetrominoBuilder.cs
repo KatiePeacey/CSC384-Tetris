@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 using System.Collections.Generic;
+using System.Linq;
 
 public class CustomTetrominoBuilder : MonoBehaviour
 {
@@ -38,17 +39,23 @@ public class CustomTetrominoBuilder : MonoBehaviour
                 gridToggles.Add(newToggle);
             }
         }
+        Debug.Log("Total Toggles: " + gridToggles.Count);
     }
+
 
     private void OnToggleChanged(int x, int y, bool isOn)
     {
         Vector2Int pos = new Vector2Int(x, y);
 
         if (isOn && !customShape.Contains(pos))
-            customShape.Add(pos);
+            customShape.Add(pos);  // Add position if toggle is on and not already in the list
         else if (!isOn && customShape.Contains(pos))
-            customShape.Remove(pos);
+            customShape.Remove(pos);  // Remove position if toggle is off and in the list
+
+        Debug.Log("Current Custom Shape: " + string.Join(", ", customShape.Select(cell => cell.ToString()).ToArray()));
+
     }
+
 
     public void OnSubmit()
     {
@@ -58,23 +65,52 @@ public class CustomTetrominoBuilder : MonoBehaviour
             messageText.color = Color.red;
             return;
         }
-
-        // Normalize coordinates to center the shape
-        Vector2Int min = new Vector2Int(int.MaxValue, int.MaxValue);
-        foreach (Vector2Int cell in customShape)
+        Debug.Log("Custom Shape Before Normalizing:");
+        foreach (var cell in customShape)
         {
-            min.x = Mathf.Min(min.x, cell.x);
-            min.y = Mathf.Min(min.y, cell.y);
+            Debug.Log(cell);
         }
 
+
+
+        int minX = int.MaxValue, maxX = int.MinValue;
+        int minY = int.MaxValue, maxY = int.MinValue;
+
+        foreach (Vector2Int cell in customShape)
+        {
+            minX = Mathf.Min(minX, cell.x);
+            maxX = Mathf.Max(maxX, cell.x);
+            minY = Mathf.Min(minY, cell.y);
+            maxY = Mathf.Max(maxY, cell.y);
+        }
+
+        // Find center of bounds
+        float centerX = (minX + maxX) / 2f;
+        float centerY = (minY + maxY) / 2f;
+
+        // Normalize to top-left origin
         Vector2Int[] normalizedShape = new Vector2Int[customShape.Count];
         for (int i = 0; i < customShape.Count; i++)
         {
-            normalizedShape[i] = customShape[i] - min;
+            normalizedShape[i] = new Vector2Int(
+                customShape[i].x - minX,
+                customShape[i].y - minY
+            );
         }
+
 
         // Save the custom shape
         Data.Cells[Tetromino.Custom] = normalizedShape;
+        Debug.Log("Normalized Shape:");
+        foreach (var cell in normalizedShape)
+        {
+            Debug.Log(cell);
+        }
+        foreach (var cell in normalizedShape)
+        {
+            if (cell.x < 0 || cell.y < 0)
+                Debug.LogWarning($"Warning: Cell out of bounds - {cell}");
+        }
 
         messageText.text = "Custom piece saved!";
         messageText.color = Color.green;

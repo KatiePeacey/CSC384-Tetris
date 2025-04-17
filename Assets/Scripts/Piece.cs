@@ -1,3 +1,4 @@
+using System.Linq;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -21,23 +22,40 @@ public class Piece : MonoBehaviour
     public AudioClip bombSound;
     private PowerupInventory powerupInventory;
 
-    public void Initialize(Board board, Vector3Int position, TetrominoData data)
+    // Inside Initialize() method
+public void Initialize(Board board, Vector3Int position, TetrominoData data)
+{
+    this.board = board;
+    this.position = position;
+
+    // Check if it's a custom Tetromino
+    if (data.tetromino == Tetromino.Custom)
     {
-        this.board = board;
-        this.position = position;
+        // For custom pieces, create a new instance to avoid modifying global data
+        this.data = new TetrominoData(data);  // Ensure a fresh copy of the data
+        this.cells = Data.GetCustomCells().Select(cell => (Vector3Int)cell).ToArray();  // Assign custom cells
+    }
+    else
+    {
+        // For regular Tetrominos, assign the existing data and initialize it
         this.data = data;
-        this.rotationIndex = 0;
-        this.stepTime = Time.time + this.stepDelay;
-        this.lockTime = 0f;
-
-        if (this.cells == null) {
-            this.cells = new Vector3Int[data.cells.Length];
-        }
-
-        for (int i = 0; i < data.cells.Length; i++) {
+        this.data.Initialize();  // Initialize standard Tetromino (I, O, T, etc.)
+        this.cells = new Vector3Int[data.cells.Length];
+        for (int i = 0; i < data.cells.Length; i++)
+        {
             this.cells[i] = (Vector3Int)data.cells[i];
         }
     }
+
+    // Set the initial rotation index and timing
+    this.rotationIndex = 0;
+    this.stepTime = Time.time + this.stepDelay;
+    this.lockTime = 0f;
+}
+
+
+
+
 
     private void Update()
     {
@@ -186,21 +204,27 @@ public class Piece : MonoBehaviour
             this.cells[i] = new Vector3Int(x, y, 0);
         }
     }
-    private bool TestWallKicks(int rotationIndex, int rotationDirection)
+private bool TestWallKicks(int rotationIndex, int rotationDirection)
+{
+    // Skip wall kicks for custom Tetrominoes
+    if (this.data.tetromino == Tetromino.Custom)
     {
-        int wallKickIndex = GetWallKickIndex(rotationIndex, rotationDirection);
-
-        for (int i = 0; i < this.data.wallKicks.GetLength(1); i++)
-        {
-            Vector2Int translation = this.data.wallKicks[wallKickIndex, i];
-
-            if (Move(translation)) {
-                return true;
-            }
-    
-        }
-        return false;
+        return true; // Allow the rotation without wall kick checks
     }
+
+    int wallKickIndex = GetWallKickIndex(rotationIndex, rotationDirection);
+
+    for (int i = 0; i < this.data.wallKicks.GetLength(1); i++)
+    {
+        Vector2Int translation = this.data.wallKicks[wallKickIndex, i];
+
+        if (Move(translation)) {
+            return true;
+        }
+    }
+    return false;
+}
+
 
     private int GetWallKickIndex(int rotationIndex, int rotationDirection)
     {
