@@ -51,6 +51,8 @@ public class GameManagerBehaviour : MonoBehaviour
     public Text powerupMessageText;
     public AudioSource audioSource;
     public AudioClip powerupDing;
+    public AudioSource highScore;
+    public AudioClip newScore;
     private int lastSubmittedScore = 0;
 
 
@@ -70,6 +72,10 @@ public class GameManagerBehaviour : MonoBehaviour
         scoreText.text = "Score: " + score;
         levelText.text = "Level: " + level;
         board.linesCleared = 0;
+        powerupInventory = new PowerupInventory();
+        explosionMilestone = 0;
+        freezeMilestone = 0;
+        laserMilestone = 0;
         Debug.Log("Game stats reset.");
     }
 
@@ -170,8 +176,6 @@ public class GameManagerBehaviour : MonoBehaviour
         pieceManager.SetSpeed(GetSpeedForLevel());
         SetScore(score + 100);
         SetLevel(level + 1);
-        ShowPB(score, level);
-        ShowRank(score);
     }
 
     private float GetSpeedForLevel()
@@ -189,7 +193,6 @@ public class GameManagerBehaviour : MonoBehaviour
             lastSubmittedScore = score;
             UpdateLeaderboardDuringGameplay();
         }
-
         ShowPB(score, level);
         ShowRank(score);
     }
@@ -213,6 +216,7 @@ public class GameManagerBehaviour : MonoBehaviour
             scorePBText.color = Color.yellow;
             levelPBText.text = "New PB Level: " + level.ToString();
             levelPBText.color = Color.yellow;
+
         }
         else if (score > existingItem.score)
         {
@@ -220,6 +224,10 @@ public class GameManagerBehaviour : MonoBehaviour
             scorePBText.color = Color.yellow;
             levelPBText.text = "New PB Level: " + level.ToString();
             levelPBText.color = Color.yellow;
+            if (newScore && highScore) {
+                highScore.PlayOneShot(newScore);
+            }
+
         }
         else
         {
@@ -233,7 +241,8 @@ public class GameManagerBehaviour : MonoBehaviour
     private void ShowRank(int score)
     {
         List<ScoreboardItem> sortedList = new List<ScoreboardItem>(scoreboardManager.ScoreboardList);
-        sortedList.Sort((a, b) => b.score.CompareTo(a.score));
+        sortedList.Sort((a, b) => b.score.CompareTo(a.score)); // ensure correct sort
+
 
         int playerRank = sortedList.FindIndex(item => item.playerName == playerName);
 
