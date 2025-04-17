@@ -144,6 +144,10 @@ public class Piece : MonoBehaviour
 
     private void Rotate(int direction)
     {
+        if (this.data.tetromino == Tetromino.Custom){
+        return;
+        }
+        else {
         int originalRotation = this.rotationIndex;
         this.rotationIndex = Wrap(this.rotationIndex + direction, 0, 4);
 
@@ -152,6 +156,7 @@ public class Piece : MonoBehaviour
         {
             this.rotationIndex = originalRotation;
             ApplyRotationMatrix(-direction);
+        }
         }
     }
 

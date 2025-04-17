@@ -13,6 +13,7 @@ public class Board : MonoBehaviour
     public AudioSource sfxSource;
     public AudioClip lineBlastSFX;
     public int linesCleared = 0;
+    
 
 
     public RectInt Bounds
@@ -36,10 +37,21 @@ public class Board : MonoBehaviour
 
     public void SpawnPiece()
     {
-        int random = Random.Range(0, this.tetrominoes.Length);
-        TetrominoData data = this.tetrominoes[random];
+        while (true)
+        {
+            int random = Random.Range(0, this.tetrominoes.Length);
+            TetrominoData data = this.tetrominoes[random];
 
-        this.activePiece.Initialize(this, this.spawnPosition, data);
+            // Skip if it's the custom piece but hasn't been defined yet
+            if (data.tetromino == Tetromino.Custom)
+            {
+                if (!Data.Cells.ContainsKey(Tetromino.Custom) || Data.Cells[Tetromino.Custom].Length == 0)
+                    continue;
+            }
+            this.activePiece.Initialize(this, this.spawnPosition, data);
+            break;
+        }
+        
 
         if (IsValidPosition(this.activePiece, this.spawnPosition)) {
             Set(this.activePiece);
@@ -165,6 +177,7 @@ public class Board : MonoBehaviour
 
         GameObject effect = Instantiate(LineBlastEffect, effectPosition, Quaternion.identity);
         Destroy(effect, 2f); 
+
         if (sfxSource && lineBlastSFX)
         {
             sfxSource.PlayOneShot(lineBlastSFX);

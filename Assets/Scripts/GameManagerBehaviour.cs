@@ -10,6 +10,7 @@ public class GameManagerBehaviour : MonoBehaviour
     public GameObject game;
     public GameObject MainMenu;
     public GameObject Leaderboard;
+    public GameObject CustomMaker;
     public Transform ScoreboardPanel;
     public GameObject scoreboardItemPrefab;
     public int level = 0;
@@ -30,7 +31,6 @@ public class GameManagerBehaviour : MonoBehaviour
     public bool gameOver;
     public bool mainMenu;
     public ScoreboardManager scoreboardManager;
-    public string currentPlayerName;
     public bool isFeverMode;
     private float feverEndTime;
     public GameObject feverOverlay;
@@ -58,6 +58,7 @@ public class GameManagerBehaviour : MonoBehaviour
     private int previousRank = -1;
     public AudioClip rankUpSFX;
     private Coroutine rankFlashCoroutine;
+    public CustomTetrominoBuilder customBuilder;
 
 
 
@@ -90,6 +91,7 @@ public class GameManagerBehaviour : MonoBehaviour
         gameOverMenu.SetActive(false);
         game.SetActive(false);
         Leaderboard.SetActive(false);
+        CustomMaker.SetActive(false);
         mainMenu = true;
 
         PopulateLeaderboardPanel();
@@ -134,6 +136,7 @@ public class GameManagerBehaviour : MonoBehaviour
         MainMenu.SetActive(false);
         game.SetActive(true);
         Leaderboard.SetActive(false);
+        CustomMaker.SetActive(false);
 
         ResetGameStats();
         pieceManager.SetSpeed(GetSpeedForLevel());
@@ -151,6 +154,8 @@ public class GameManagerBehaviour : MonoBehaviour
         game.SetActive(false);
         MainMenu.SetActive(false);
         Leaderboard.SetActive(false);
+        CustomMaker.SetActive(false);
+        Data.Cells.Remove(Tetromino.Custom);
 
         gameOver = true;
         mainMenu = false;
@@ -166,6 +171,15 @@ public class GameManagerBehaviour : MonoBehaviour
         gameOverMenu.SetActive(false);
         game.SetActive(false);
         MainMenu.SetActive(false);
+        CustomMaker.SetActive(false);
+    }
+    public void ShowCustomBuilder()
+    {
+        Leaderboard.SetActive(false);
+        gameOverMenu.SetActive(false);
+        game.SetActive(false);
+        MainMenu.SetActive(false);
+        CustomMaker.SetActive(true);
     }
 
     private bool ShouldIncreaseLevel()
@@ -516,7 +530,5 @@ public class GameManagerBehaviour : MonoBehaviour
         freezeButton.interactable = powerupInventory.freezeCount > 0;
         laserButton.interactable = powerupInventory.laserCount > 0;
     }
-
-
 
 }

@@ -9,6 +9,7 @@ public enum Tetromino
     L,
     S,
     Z,
+    Custom
 }
 
 [System.Serializable]
@@ -23,6 +24,27 @@ public struct TetrominoData
     {
         this.cells = Data.Cells[this.tetromino];
         this.wallKicks = Data.WallKicks[this.tetromino];
+    }
+
+    // Function to spawn the Tetromino at a specific position
+    public void SpawnTetromino(Tilemap tilemap, Tetromino tetromino, Vector2Int spawnPosition)
+    {
+        Vector2Int[] cells;
+        if (tetromino == Tetromino.Custom)
+        {
+            cells = Data.Cells[Tetromino.Custom]; // Get the custom shape
+        }
+        else
+        {
+            cells = Data.Cells[tetromino];  // Get the default shape
+        }
+
+        // Loop through the cells and place the tiles on the tilemap
+        foreach (Vector2Int cell in cells)
+        {
+            Vector3Int position = new Vector3Int(spawnPosition.x + cell.x, spawnPosition.y + cell.y, 0);
+            tilemap.SetTile(position, tile);  // Place the tile at the calculated position
+        }
     }
 
 }
