@@ -3,6 +3,15 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
+public enum GameState
+{
+    MainMenu,
+    Playing,
+    GameOver,
+    Leaderboard,
+    CustomMaker
+}
+
  
 public class GameManagerBehaviour : MonoBehaviour
 {
@@ -28,8 +37,6 @@ public class GameManagerBehaviour : MonoBehaviour
     private bool isRunning = true;
     public Piece pieceManager;
     public Board board;
-    public bool gameOver;
-    public bool mainMenu;
     public ScoreboardManager scoreboardManager;
     public bool isFeverMode;
     private float feverEndTime;
@@ -59,8 +66,42 @@ public class GameManagerBehaviour : MonoBehaviour
     public AudioClip rankUpSFX;
     private Coroutine rankFlashCoroutine;
     public CustomTetrominoBuilder customBuilder;
+    public GameState currentState;
 
+    public void ChangeState(GameState newState)
+    {
+        currentState = newState;
 
+        MainMenu.SetActive(false);
+        game.SetActive(false);
+        gameOverMenu.SetActive(false);
+        Leaderboard.SetActive(false);
+        CustomMaker.SetActive(false);
+
+        switch (currentState)
+        {
+            case GameState.MainMenu:
+                MainMenu.SetActive(true);
+                break;
+
+            case GameState.Playing:
+                game.SetActive(true);
+                ResetGameStats();
+                break;
+
+            case GameState.GameOver:
+                gameOverMenu.SetActive(true);
+                break;
+
+            case GameState.Leaderboard:
+                Leaderboard.SetActive(true);
+                break;
+
+            case GameState.CustomMaker:
+                CustomMaker.SetActive(true);
+                break;
+        }
+    }
 
     public void SetPlayerName(string name)
     {
@@ -87,12 +128,7 @@ public class GameManagerBehaviour : MonoBehaviour
     {
         scoreboardManager = ScoreboardManager.Instance;
         board.tilemap.ClearAllTiles();
-        MainMenu.SetActive(true);
-        gameOverMenu.SetActive(false);
-        game.SetActive(false);
-        Leaderboard.SetActive(false);
-        CustomMaker.SetActive(false);
-        mainMenu = true;
+        ChangeState(GameState.MainMenu);
 
         PopulateLeaderboardPanel();
     }
@@ -132,11 +168,7 @@ public class GameManagerBehaviour : MonoBehaviour
 
     public void NewGame()
     {
-        gameOverMenu.SetActive(false);
-        MainMenu.SetActive(false);
-        game.SetActive(true);
-        Leaderboard.SetActive(false);
-        CustomMaker.SetActive(false);
+        ChangeState(GameState.Playing);
 
         ResetGameStats();
         pieceManager.SetSpeed(GetSpeedForLevel());
@@ -144,21 +176,13 @@ public class GameManagerBehaviour : MonoBehaviour
         PopulateLeaderboardPanel();
         ShowPB(score, level);
         ShowRank(score);
-        gameOver = false;
-        mainMenu = true;
     }
     public void GameOver()
     {
         board.tilemap.ClearAllTiles();
-        gameOverMenu.SetActive(true);
-        game.SetActive(false);
-        MainMenu.SetActive(false);
-        Leaderboard.SetActive(false);
-        CustomMaker.SetActive(false);
+        ChangeState(GameState.GameOver);
         Data.Cells.Remove(Tetromino.Custom);
 
-        gameOver = true;
-        mainMenu = false;
         ScoreboardManager.Instance.AddNewEntry(playerName, score, level);
         UpdateLeaderboardDuringGameplay();
         ShowRank(score);
@@ -167,19 +191,11 @@ public class GameManagerBehaviour : MonoBehaviour
 
     public void ShowLeaderboard()
     {
-        Leaderboard.SetActive(true);
-        gameOverMenu.SetActive(false);
-        game.SetActive(false);
-        MainMenu.SetActive(false);
-        CustomMaker.SetActive(false);
+        ChangeState(GameState.Leaderboard);
     }
     public void ShowCustomBuilder()
     {
-        Leaderboard.SetActive(false);
-        gameOverMenu.SetActive(false);
-        game.SetActive(false);
-        MainMenu.SetActive(false);
-        CustomMaker.SetActive(true);
+        ChangeState(GameState.CustomMaker);
     }
 
     private bool ShouldIncreaseLevel()

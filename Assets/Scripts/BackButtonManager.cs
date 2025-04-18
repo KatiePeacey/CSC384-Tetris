@@ -15,19 +15,26 @@ public class BackButtonManager : MonoBehaviour
     }
     private void OnSubmit()
     {
-        if (gameManager.gameOver == true)
+        switch (gameManager.currentState)
         {
-            Leaderboard.SetActive(false);
-            gameOverMenu.SetActive(true);
-            game.SetActive(false);
-            MainMenu.SetActive(false);
-        }
-        else if (gameManager.mainMenu == true)
-        {
-            Leaderboard.SetActive(false);
-            gameOverMenu.SetActive(false);
-            game.SetActive(false);
-            MainMenu.SetActive(true);
+            case GameState.Leaderboard:
+                gameManager.ChangeState(GameState.MainMenu);
+                break;
+
+            case GameState.GameOver:
+                gameManager.ChangeState(GameState.MainMenu);
+                break;
+
+            case GameState.CustomMaker:
+                gameManager.ChangeState(GameState.MainMenu);
+                break;
+
+            case GameState.Playing:
+                gameManager.ChangeState(GameState.MainMenu);
+                break;
+
+            default:
+                break;
         }
     }
 }
