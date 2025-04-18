@@ -7312,6 +7312,7 @@ GameObject:
   - component: {fileID: 465091954}
   - component: {fileID: 465091953}
   - component: {fileID: 465091952}
+  - component: {fileID: 465091955}
   m_Layer: 5
   m_Name: FreezeButton
   m_TagString: Untagged
@@ -7382,19 +7383,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 465091953}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1354974645}
-        m_TargetAssemblyTypeName: GameManagerBehaviour, Assembly-CSharp
-        m_MethodName: UseFreezePowerup
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!114 &465091953
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7433,6 +7422,18 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 465091950}
   m_CullTransparentMesh: 1
+--- !u!114 &465091955
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 465091950}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8d5680985d7ef44e4891dd355d8ab42d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &474529240
 GameObject:
   m_ObjectHideFlags: 0
@@ -12428,8 +12429,6 @@ MonoBehaviour:
   SuperText: {fileID: 417611229}
   pieceManager: {fileID: 1148283360}
   board: {fileID: 1148283361}
-  gameOver: 0
-  mainMenu: 0
   scoreboardManager: {fileID: 658387962}
   isFeverMode: 0
   feverOverlay: {fileID: 1300869771}
@@ -12451,6 +12450,10 @@ MonoBehaviour:
   newScore: {fileID: 8300000, guid: 44798ad81141e4da58cef21ed3a72f77, type: 3}
   rankUpSFX: {fileID: 8300000, guid: 82c0761c2625b4ed5b84d715bbd28e65, type: 3}
   customBuilder: {fileID: 1905898162}
+  currentState: 0
+  explosionBtnComponent: {fileID: 1362194529}
+  freezeBtnComponent: {fileID: 465091955}
+  laserBtnComponent: {fileID: 1808271716}
 --- !u!4 &1354974646
 Transform:
   m_ObjectHideFlags: 0
@@ -12494,6 +12497,7 @@ GameObject:
   - component: {fileID: 1362194528}
   - component: {fileID: 1362194527}
   - component: {fileID: 1362194526}
+  - component: {fileID: 1362194529}
   m_Layer: 5
   m_Name: ExplosionButton
   m_TagString: Untagged
@@ -12564,19 +12568,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1362194527}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1354974645}
-        m_TargetAssemblyTypeName: GameManagerBehaviour, Assembly-CSharp
-        m_MethodName: UseExplosionPowerup
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!114 &1362194527
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -12615,6 +12607,18 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1362194524}
   m_CullTransparentMesh: 1
+--- !u!114 &1362194529
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1362194524}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8d5680985d7ef44e4891dd355d8ab42d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1368732086
 GameObject:
   m_ObjectHideFlags: 0
@@ -13858,6 +13862,7 @@ GameObject:
   - component: {fileID: 1808271715}
   - component: {fileID: 1808271714}
   - component: {fileID: 1808271713}
+  - component: {fileID: 1808271716}
   m_Layer: 5
   m_Name: LaserButton
   m_TagString: Untagged
@@ -13928,19 +13933,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1808271714}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1354974645}
-        m_TargetAssemblyTypeName: GameManagerBehaviour, Assembly-CSharp
-        m_MethodName: UseLaserPowerup
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!114 &1808271714
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -13979,6 +13972,18 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1808271711}
   m_CullTransparentMesh: 1
+--- !u!114 &1808271716
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1808271711}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8d5680985d7ef44e4891dd355d8ab42d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1820795051
 GameObject:
   m_ObjectHideFlags: 0

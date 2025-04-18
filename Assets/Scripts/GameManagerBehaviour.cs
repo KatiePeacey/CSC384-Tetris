@@ -67,6 +67,10 @@ public class GameManagerBehaviour : MonoBehaviour
     private Coroutine rankFlashCoroutine;
     public CustomTetrominoBuilder customBuilder;
     public GameState currentState;
+    public PowerupButton explosionBtnComponent;
+    public PowerupButton freezeBtnComponent;
+    public PowerupButton laserBtnComponent;
+
 
     public void ChangeState(GameState newState)
     {
@@ -129,6 +133,10 @@ public class GameManagerBehaviour : MonoBehaviour
         scoreboardManager = ScoreboardManager.Instance;
         board.tilemap.ClearAllTiles();
         ChangeState(GameState.MainMenu);
+        explosionBtnComponent.SetCommand(new ExplosionCommand(this));
+        freezeBtnComponent.SetCommand(new FreezeCommand(this));
+        laserBtnComponent.SetCommand(new LaserCommand(this));
+
 
         PopulateLeaderboardPanel();
     }
