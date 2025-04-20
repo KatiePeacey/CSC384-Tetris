@@ -70,6 +70,8 @@ public class GameManagerBehaviour : MonoBehaviour
     public PowerupButton explosionBtnComponent;
     public PowerupButton freezeBtnComponent;
     public PowerupButton laserBtnComponent;
+    public GameObject gameplayObjectsContainer;
+    public GameObject Background;
 
 
     public void ChangeState(GameState newState)
@@ -81,28 +83,36 @@ public class GameManagerBehaviour : MonoBehaviour
         gameOverMenu.SetActive(false);
         Leaderboard.SetActive(false);
         CustomMaker.SetActive(false);
+        gameplayObjectsContainer.SetActive(false);
+        Background.SetActive(true);
 
         switch (currentState)
         {
             case GameState.MainMenu:
                 MainMenu.SetActive(true);
+                Background.SetActive(true);
                 break;
 
             case GameState.Playing:
                 game.SetActive(true);
+                gameplayObjectsContainer.SetActive(true);
+                Background.SetActive(true);
                 ResetGameStats();
                 break;
 
             case GameState.GameOver:
                 gameOverMenu.SetActive(true);
+                Background.SetActive(true);
                 break;
 
             case GameState.Leaderboard:
                 Leaderboard.SetActive(true);
+                Background.SetActive(true);
                 break;
 
             case GameState.CustomMaker:
                 CustomMaker.SetActive(true);
+                Background.SetActive(true);
                 break;
         }
     }
